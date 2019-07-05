@@ -2,10 +2,7 @@ import concurrent.futures
 import logging
 import uuid
 
-from threading import (
-    Event,
-    get_ident
-)
+from threading import Event
 
 from .util.event_support import EventSupport
 from .util.option_codes import translate_codes
@@ -134,11 +131,18 @@ class AppEngine(EventSupport):
                 str(error)
             )
 
-    def _thread_credentials_load(self, command_id, user_name, password):
+    def _thread_credentials_load(self, command_id, user_name, password, token):
         logger.info(f'Credentials load started')
         try:
-            result = self._tesla_api.get_token(user_name, password)
-            self._tesla_api.token = result['access_token']
+            if token:
+                # Test the token
+                self._tesla_api.token = token
+                self._tesla_api.get_vehicles()
+                result = { 'access_token': token }
+            else:
+                # No token so use the user and password to obtain a new one
+                result = self._tesla_api.get_token(user_name, password)
+                self._tesla_api.token = result['access_token']
             self.raise_event(self.events.CREDENTIALS_RESULT, command_id, result, True, '')
         except Exception as error:
             logger.error(error)
@@ -184,14 +188,14 @@ class AppEngine(EventSupport):
 
         return command_id
 
-    def load_credentials(self, user_name, password):
-        if not user_name:
+    def load_credentials(self, user_name=None, password=None, token=None):
+        if not user_name and not token:
             raise EngineValidationError('The user name can not be empty')
-        if not password:
+        if not password and not token:
             raise EngineValidationError('The password can not be empty')
 
         command_id = uuid.uuid4().hex
-        self.thread_pool.submit(self._thread_credentials_load, command_id, user_name, password)
+        self.thread_pool.submit(self._thread_credentials_load, command_id, user_name, password, token)
         return command_id
 
     def get_current_token(self):
@@ -202,6 +206,7 @@ class AppEngine(EventSupport):
 
     def switch_api(self, new_api, is_demo=False):
         logger.info(f'Switching api. Demo {is_demo}')
+        # TO-DO: make this thread safe
         self._tesla_api = new_api
         self.raise_event(self.events.API_SWITCHED, is_demo)
 

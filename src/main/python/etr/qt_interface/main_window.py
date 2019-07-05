@@ -166,7 +166,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.credentials_dialog.show_message('')
             self.app_engine.load_credentials(
                 self.credentials_dialog.get_user_name(),
-                self.credentials_dialog.get_password()
+                self.credentials_dialog.get_password(),
+                self.credentials_dialog.get_token()
             )
         except EngineValidationError as error:
             self.credentials_dialog.switch_input_status(True)
