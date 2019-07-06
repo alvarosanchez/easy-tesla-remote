@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from .dictionaries import get_dictionary_value
 
 
@@ -103,6 +105,24 @@ def string_energy(frame, key, qwidget, widget_property):
     return result
 
 
+@AdapterTracker.adapter('string_current')
+def string_current(frame, key, qwidget, widget_property):
+    value = get_dictionary_value(frame, key)
+    result = f'{value} A' if value != None else ''
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
+
+
+@AdapterTracker.adapter('string_tension')
+def string_tension(frame, key, qwidget, widget_property):
+    value = get_dictionary_value(frame, key)
+    result = f'{value} V' if value != None else ''
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
+
+
 @AdapterTracker.adapter('string_percentaje')
 def string_percentaje(frame, key, qwidget, widget_property):
     value = get_dictionary_value(frame, key)
@@ -164,3 +184,17 @@ def string_charge_power(frame, key, qwidget, widget_property):
     if qwidget != None:
         qwidget.setProperty(widget_property, value)
     return value
+
+
+@AdapterTracker.adapter('string_time')
+def string_time(frame, key, qwidget, widget_property):
+    value = get_dictionary_value(frame, key)
+    result = None
+
+    if value != None:
+        delta = timedelta(minutes=int(value * 60))
+        result = str(delta)
+    
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
