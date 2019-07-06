@@ -1106,7 +1106,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="8" column="0">
+                <item row="9" column="0">
                  <widget class="QLabel" name="label_23">
                   <property name="minimumSize">
                    <size>
@@ -1115,14 +1115,14 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Current:</string>
+                   <string>Current Drawn:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="8" column="1">
-                 <widget class="QLabel" name="carChargeCurrent">
+                <item row="9" column="1">
+                 <widget class="QLabel" name="carChargeCurrentDrawn">
                   <property name="text">
-                   <string>carChargeCurrent</string>
+                   <string>carChargeCurrentDrawnnt</string>
                   </property>
                   <property name="jsonAttribute" stdset="0">
                    <string notr="true">charge_state.charger_actual_current</string>
@@ -1135,7 +1135,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="9" column="0">
+                <item row="11" column="0">
                  <widget class="QLabel" name="label_25">
                   <property name="minimumSize">
                    <size>
@@ -1148,7 +1148,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="9" column="1">
+                <item row="11" column="1">
                  <widget class="QLabel" name="carChargeCurrentMax">
                   <property name="text">
                    <string>carChargeCurrentMax</string>
@@ -1164,7 +1164,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="7" column="0">
+                <item row="8" column="0">
                  <widget class="QLabel" name="label_24">
                   <property name="minimumSize">
                    <size>
@@ -1177,7 +1177,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="7" column="1">
+                <item row="8" column="1">
                  <widget class="QLabel" name="carChargePhases">
                   <property name="text">
                    <string>carChargePhases</string>
@@ -1193,7 +1193,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="0">
+                <item row="7" column="0">
                  <widget class="QLabel" name="label_26">
                   <property name="minimumSize">
                    <size>
@@ -1206,7 +1206,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="1">
+                <item row="7" column="1">
                  <widget class="QLabel" name="carChargeVoltage">
                   <property name="text">
                    <string>carChargeVoltage</string>
@@ -1222,7 +1222,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="0">
+                <item row="6" column="0">
                  <widget class="QLabel" name="label_14">
                   <property name="minimumSize">
                    <size>
@@ -1231,20 +1231,20 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Charge Power:</string>
+                   <string>Power To Battery:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="1">
-                 <widget class="QLabel" name="carChargePower">
+                <item row="6" column="1">
+                 <widget class="QLabel" name="carChargePowerEffective">
                   <property name="text">
-                   <string>carChargePower</string>
+                   <string>carChargePowerEffective</string>
                   </property>
                   <property name="jsonAttribute" stdset="0">
                    <string notr="true">charge_state.charge_rate</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_power</string>
+                   <string notr="true">charge_power</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
@@ -1280,7 +1280,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="10" column="0">
+                <item row="12" column="0">
                  <widget class="QLabel" name="label_18">
                   <property name="minimumSize">
                    <size>
@@ -1293,7 +1293,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="10" column="1">
+                <item row="12" column="1">
                  <widget class="QLabel" name="carChargeAdded">
                   <property name="text">
                    <string>carChargeAdded</string>
@@ -1303,6 +1303,52 @@
                   </property>
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">string_energy</string>
+                  </property>
+                  <property name="targetProperty" stdset="0">
+                   <string notr="true">text</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_44">
+                  <property name="text">
+                   <string>Charge Power Drawn:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QLabel" name="carChargePowerDrawn">
+                  <property name="text">
+                   <string>carChargePowerDrawn</string>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string notr="true">charge_state.charger_actual_current</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">charge_power</string>
+                  </property>
+                  <property name="targetProperty" stdset="0">
+                   <string notr="true">text</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_46">
+                  <property name="text">
+                   <string>Current to Battery:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="1">
+                 <widget class="QLabel" name="carChargeCurrentEffective">
+                  <property name="text">
+                   <string>carChargeCurrentEffective</string>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string notr="true">charge_state.charge_rate</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">string</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>

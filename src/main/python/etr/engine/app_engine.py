@@ -110,6 +110,7 @@ class AppEngine(EventSupport):
         self.raise_event(self.events.POLL_STOPPED)
 
     def _thread_api_command(self, command_id, command_name, function, *args):
+        logger.info(f'Api command thread started')
         try:
             result = function(*args)
             self.raise_event(
@@ -130,6 +131,7 @@ class AppEngine(EventSupport):
                 False,
                 str(error)
             )
+        logger.info(f'Api command thread completed')
 
     def _thread_credentials_load(self, command_id, user_name, password, token):
         logger.info(f'Credentials load started')

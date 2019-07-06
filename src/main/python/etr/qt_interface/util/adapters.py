@@ -145,3 +145,22 @@ def string_estimated_max_range(frame, key, qwidget, widget_property):
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
+
+
+@AdapterTracker.adapter('charge_power')
+def string_charge_power(frame, key, qwidget, widget_property):
+    current = get_dictionary_value(frame, key)
+    voltage = get_dictionary_value(frame, 'charge_state.charger_voltage')
+    phases = get_dictionary_value(frame, 'charge_state.charger_phases')
+
+    value = None
+
+    if current != None and voltage != None:
+        value = current * voltage / 1000
+        if phases == 3:
+            value = value * 1.732
+        value = f'{round(value, 2)} kW'
+
+    if qwidget != None:
+        qwidget.setProperty(widget_property, value)
+    return value
