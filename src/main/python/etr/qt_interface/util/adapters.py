@@ -198,3 +198,18 @@ def string_time(frame, key, qwidget, widget_property):
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
+
+
+@AdapterTracker.adapter('charge_efficiency')
+def charge_efficiency(frame, key, qwidget, widget_property):
+    total_current = get_dictionary_value(frame, 'charge_state.charger_actual_current')
+    rate = get_dictionary_value(frame, 'charge_state.charge_rate')
+
+    result = ''
+
+    if total_current != None and rate != None and total_current != 0:
+        result = f'{round(rate * 100 / total_current, 2)} %'
+
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
