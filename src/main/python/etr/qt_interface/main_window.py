@@ -10,6 +10,7 @@ from .auto_generated.main_window_auto import Ui_MainWindow
 from .vehicle_view import VehicleView
 from .credentials_dialog import CredentialsDialog
 from .token_dialog import TokenDialog
+from .option_codes_dialog import OptionCodesDialog
 
 from engine.app_engine import EngineValidationError
 
@@ -41,6 +42,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionLoad.triggered.connect(self._on_connect)
         self.actionDisconnect.triggered.connect(self._on_disconnect)
         self.actionGet_Account_Keys.triggered.connect(self._on_show_token)
+        self.actionOption_Code_Translator.triggered.connect(self._on_option_code_translator)
 
     def showEvent(self, event):
         self._on_connect()
@@ -57,6 +59,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _on_show_token(self):
         dialog = TokenDialog(self.app_engine.get_current_token(), self)
+        dialog.exec_()
+
+    def _on_option_code_translator(self):
+        dialog = OptionCodesDialog(self.app_engine, self)
         dialog.exec_()
 
     def _on_disconnect(self):

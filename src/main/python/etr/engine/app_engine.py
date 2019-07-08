@@ -1,11 +1,16 @@
 import concurrent.futures
 import logging
+import re
 import uuid
 
 from threading import Event
 
 from .util.event_support import EventSupport
-from .util.option_codes import translate_codes
+from .util.option_codes import (
+    translate_codes,
+    VALID_CHARS,
+    SEPARATOR_CHARS,
+)
 from .util.thread_safe_counter import ThreadSafeCounter
 from .tesla.api import TeslaApiError
 
@@ -222,8 +227,12 @@ class AppEngine(EventSupport):
     def get_current_token(self):
         return self._tesla_api.token
 
+    def sanitize_option_codes(self, codes):
+        return re.sub(f'[^{VALID_CHARS}]', '', codes.upper())
+
     def translate_option_codes(self, codes):
-        return translate_codes(codes)
+        sanitized_codes = self.sanitize_option_codes(codes)
+        return translate_codes(sanitized_codes)
 
     def switch_api(self, new_api, is_demo=False):
         logger.info(f'Trying to switch api. Demo {is_demo}')

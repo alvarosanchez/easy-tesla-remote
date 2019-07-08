@@ -22,6 +22,12 @@ def translate_codes(option_codes):
     return result
 
 
+VALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,'
+
+
+SEPARATOR_CHARS = ','
+
+
 CODES = {
     'MDLS': 'Model S',
     'MS03': 'Model S',
