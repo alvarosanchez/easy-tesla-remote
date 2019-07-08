@@ -1,5 +1,5 @@
 """
-Tests for etr.controllers.util.tesla_api
+Tests for etr.engine.tesla.api
 """
 import json
 import pytest

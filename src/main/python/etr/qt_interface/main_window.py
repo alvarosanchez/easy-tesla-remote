@@ -61,6 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _on_disconnect(self):
         self.app_engine.poll_stop()
+        self.app_engine.reset_api_token()
 
     def _on_connect(self):
         logger.info('Sending start poll to engine')

@@ -6,6 +6,7 @@ from threading import Event
 
 from .util.event_support import EventSupport
 from .util.option_codes import translate_codes
+from .util.thread_safe_counter import ThreadSafeCounter
 from .tesla.api import TeslaApiError
 
 
@@ -56,43 +57,50 @@ class AppEngine(EventSupport):
         super().__init__(EngineEvents.to_array())
         self.commands = EngineCommands
         self.events = EngineEvents
-        self.terminate = Event()
-        self.terminated = Event()
-        self.terminated.set()
+        self._terminate_poll = Event()
+        self._poll_terminated = Event()
+        self._poll_terminated.set()
+
+        self._api_active_accesses = ThreadSafeCounter()
+        self._api_not_updating = Event()
+        self._api_not_updating.set()
+
         self._tesla_api = tesla_api
         self.poll_rate = 3
-        self.thread_pool = concurrent.futures.ThreadPoolExecutor()
+        self._thread_pool = concurrent.futures.ThreadPoolExecutor()
 
     def _thread_api_poller(self):
         logger.info(f'Poller thread started')
         self.raise_event(self.events.POLL_STARTING)
         first_loop = True
-        while first_loop or not self.terminate.wait(self.poll_rate):
-            first_loop = False
-            logger.info(f'Poll tick started')
-            new_frames = []
-            future_results = []
+        while first_loop or not self._terminate_poll.wait(self.poll_rate):
+            self._api_not_updating.wait()
+            with self._api_active_accesses:
+                first_loop = False
+                logger.info(f'Poll tick started')
+                new_frames = []
+                future_results = []
 
-            try:
-                cars = self._tesla_api.get_vehicles()
-            except TeslaApiError as error:
-                if error.status_code == 401:
-                    self.raise_event(self.events.CREDENTIALS_REQUIRED)
-                    self.terminate.set()
-                    break
-                else:
-                    raise
-
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                for car in cars:
-                    if car['state'] == 'online':
-                        future_results.append(
-                            executor.submit(self._tesla_api.get_vehicle_data, car['id'])
-                        )
+                try:
+                    cars = self._tesla_api.get_vehicles()
+                except TeslaApiError as error:
+                    if error.status_code == 401:
+                        self.raise_event(self.events.CREDENTIALS_REQUIRED)
+                        self._terminate_poll.set()
+                        break
                     else:
-                        if car['state'] != 'asleep' and car['state'] != 'offline':
-                            logger.critical(car['state'])
-                        new_frames.append(car)
+                        raise
+
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    for car in cars:
+                        if car['state'] == 'online':
+                            future_results.append(
+                                executor.submit(self._tesla_api.get_vehicle_data, car['id'])
+                            )
+                        else:
+                            if car['state'] != 'asleep' and car['state'] != 'offline':
+                                logger.critical(car['state'])
+                            new_frames.append(car)
 
             for future in future_results:
                 try:
@@ -105,14 +113,16 @@ class AppEngine(EventSupport):
 
             logger.info(f'Poll tick completed')
 
-        self.terminated.set()
+        self._poll_terminated.set()
         logger.info(f'Poller terminated')
         self.raise_event(self.events.POLL_STOPPED)
 
     def _thread_api_command(self, command_id, command_name, function, *args):
         logger.info(f'Api command thread started')
         try:
-            result = function(*args)
+            self._api_not_updating.wait()
+            with self._api_active_accesses:
+                result = function(*args)
             self.raise_event(
                 self.events.COMMAND_COMPLETED,
                 command_id,
@@ -135,6 +145,12 @@ class AppEngine(EventSupport):
 
     def _thread_credentials_load(self, command_id, user_name, password, token):
         logger.info(f'Credentials load started')
+        self._api_not_updating.wait()
+        self._api_not_updating.clear()
+        self._api_active_accesses.counter_is_zero.wait()
+
+        event_args = []
+
         try:
             if token:
                 # Test the token
@@ -145,27 +161,30 @@ class AppEngine(EventSupport):
                 # No token so use the user and password to obtain a new one
                 result = self._tesla_api.get_token(user_name, password)
                 self._tesla_api.token = result['access_token']
-            self.raise_event(self.events.CREDENTIALS_RESULT, command_id, result, True, '')
+            event_args = [self.events.CREDENTIALS_RESULT, command_id, result, True, '']
         except Exception as error:
             logger.error(error)
-            self.raise_event(self.events.CREDENTIALS_RESULT, command_id, {}, False, str(error))
+            event_args = [self.events.CREDENTIALS_RESULT, command_id, {}, False, str(error)]
+
+        self._api_not_updating.set()
+        self.raise_event(*event_args)
         logger.info(f'Credentials load completed')
 
     def poll_start(self):
-        if self.terminated.is_set():
+        if self._poll_terminated.is_set():
             if not self._tesla_api.token:
                 logger.debug('poll_start invoked but credentials are required')
                 self.raise_event(self.events.CREDENTIALS_REQUIRED)
             else:
                 logger.debug('poll_start invoked')
-                self.terminated.clear()
-                self.terminate.clear()
-                self.thread_pool.submit(self._thread_api_poller)
+                self._poll_terminated.clear()
+                self._terminate_poll.clear()
+                self._thread_pool.submit(self._thread_api_poller)
         else:
             logger.debug('poll_start invoked but terminated flag is not set')
 
     def poll_stop(self):
-        self.terminate.set()
+        self._terminate_poll.set()
         self.raise_event(self.events.POLL_STOPPING)
 
     def send_car_command(self, command_name, *args):
@@ -180,7 +199,7 @@ class AppEngine(EventSupport):
         if command_name not in function_map:
             raise EngineValidationError(f'{command_name} command not supported')
 
-        self.thread_pool.submit(
+        self._thread_pool.submit(
             self._thread_api_command, 
             command_id,
             command_name,
@@ -197,7 +216,7 @@ class AppEngine(EventSupport):
             raise EngineValidationError('The password can not be empty')
 
         command_id = uuid.uuid4().hex
-        self.thread_pool.submit(self._thread_credentials_load, command_id, user_name, password, token)
+        self._thread_pool.submit(self._thread_credentials_load, command_id, user_name, password, token)
         return command_id
 
     def get_current_token(self):
@@ -207,9 +226,13 @@ class AppEngine(EventSupport):
         return translate_codes(codes)
 
     def switch_api(self, new_api, is_demo=False):
-        logger.info(f'Switching api. Demo {is_demo}')
-        # TO-DO: make this thread safe
+        logger.info(f'Trying to switch api. Demo {is_demo}')
+        self._api_not_updating.wait()
+        self._api_not_updating.clear()
+        self._api_active_accesses.counter_is_zero.wait()
+        logger.info(f'Switching api now. Demo {is_demo}')
         self._tesla_api = new_api
+        self._api_not_updating.set()
         self.raise_event(self.events.API_SWITCHED, is_demo)
 
     def enable_demo_mode(self):
@@ -217,3 +240,10 @@ class AppEngine(EventSupport):
 
     def enable_real_mode(self):
         self.raise_event(self.events.REQUEST_REAL_API)
+
+    def reset_api_token(self):
+        self._api_not_updating.wait()
+        self._api_not_updating.clear()
+        self._api_active_accesses.counter_is_zero.wait()
+        self._tesla_api.token = ''
+        self._api_not_updating.set()
