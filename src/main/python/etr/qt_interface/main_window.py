@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (
     QMainWindow, 
     QMessageBox,
 )
+from PyQt5.QtCore import QTimer
 
 from .util.engine_signals import EngineSignals
 from .auto_generated.main_window_auto import Ui_MainWindow
@@ -11,6 +12,7 @@ from .vehicle_view import VehicleView
 from .credentials_dialog import CredentialsDialog
 from .token_dialog import TokenDialog
 from .option_codes_dialog import OptionCodesDialog
+from .license_dialog import LicenseDialog
 
 
 logger = logging.getLogger(__name__)
@@ -22,6 +24,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__(parent=parent)
         self.app_engine = app_engine
         self.setupUi(self)
+
+        self.initial_connection_timer = QTimer(self)
+        self.initial_connection_timer.timeout.connect(self._on_initial_connection)
+        self.load_abort_timer = QTimer(self)
+        self.load_abort_timer.timeout.connect(self._on_load_abort)
 
         self.pending_commands = []
 
@@ -41,7 +48,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionOption_Code_Translator.triggered.connect(self._on_option_code_translator)
 
     def showEvent(self, event):
-        self._on_connect()
+        license_dialog = LicenseDialog(self)
+        if license_dialog.exec_() == 1:
+            self.initial_connection_timer.start(1)
+        else:
+            self.load_abort_timer.start(1)
 
     def closeEvent(self, event):
         logger.debug('Main window closed unwiring engine events')
@@ -52,6 +63,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         message_box.setIcon(icon)
         message_box.setText(text)
         message_box.exec_()
+
+    def _on_initial_connection(self):
+        self.initial_connection_timer.stop()
+        self._on_connect()
+
+    def _on_load_abort(self):
+        self.load_abort_timer.stop()
+        self.close()
 
     def _on_show_token(self):
         dialog = TokenDialog(self.app_engine.get_current_token(), self)
