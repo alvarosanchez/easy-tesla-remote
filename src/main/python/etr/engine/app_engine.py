@@ -75,13 +75,12 @@ class AppEngine(EventSupport):
         first_loop = True
         while first_loop or not self._terminate_poll.wait(self.poll_rate):
             self._api_not_updating.wait()
-
-            first_loop = False
-            logger.info(f'Poll tick started')
-            new_frames = []
-            future_results = []
-
             with self._api_active_accesses:
+                first_loop = False
+                logger.info(f'Poll tick started')
+                new_frames = []
+                future_results = []
+
                 try:
                     cars = self._tesla_api.get_vehicles()
                 except TeslaApiError as error:
