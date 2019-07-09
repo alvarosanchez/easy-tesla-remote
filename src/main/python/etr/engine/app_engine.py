@@ -13,6 +13,7 @@ from .util.option_codes import (
 )
 from .util.thread_safe_counter import ThreadSafeCounter
 from .tesla.api import TeslaApiError
+from . import __version__
 
 
 logger = logging.getLogger(__name__)
@@ -256,3 +257,6 @@ class AppEngine(EventSupport):
         self._api_active_accesses.counter_is_zero.wait()
         self._tesla_api.token = ''
         self._api_not_updating.set()
+
+    def get_engine_version(self):
+        return __version__

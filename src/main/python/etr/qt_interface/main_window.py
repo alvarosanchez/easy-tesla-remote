@@ -13,6 +13,8 @@ from .credentials_dialog import CredentialsDialog
 from .token_dialog import TokenDialog
 from .option_codes_dialog import OptionCodesDialog
 from .license_dialog import LicenseDialog
+from .about_dialog import AboutDialog
+from . import __version__
 
 
 logger = logging.getLogger(__name__)
@@ -46,9 +48,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionDisconnect.triggered.connect(self._on_disconnect)
         self.actionGet_Account_Keys.triggered.connect(self._on_show_token)
         self.actionOption_Code_Translator.triggered.connect(self._on_option_code_translator)
+        self.actionAbout.triggered.connect(self._on_about_dialog)
 
     def showEvent(self, event):
-        license_dialog = LicenseDialog(self)
+        license_dialog = LicenseDialog(self, True)
         if license_dialog.exec_() == 1:
             self.initial_connection_timer.start(1)
         else:
@@ -71,6 +74,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _on_load_abort(self):
         self.load_abort_timer.stop()
         self.close()
+
+    def _on_about_dialog(self):
+        dialog = AboutDialog(self.app_engine.get_engine_version(), __version__, self)
+        dialog.exec_()
 
     def _on_show_token(self):
         dialog = TokenDialog(self.app_engine.get_current_token(), self)

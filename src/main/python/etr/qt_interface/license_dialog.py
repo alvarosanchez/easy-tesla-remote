@@ -4,9 +4,11 @@ from .auto_generated.license_dialog_auto import Ui_LicenseDialog
 
 class LicenseDialog(QDialog, Ui_LicenseDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, show_buttons=True):
         super().__init__(parent=parent)
         self.setupUi(self)
+        self.licenseAccept.setVisible(show_buttons)
+        self.licenseDecline.setVisible(show_buttons)
         self.licenseAccept.clicked.connect(self._on_license_accept)
         self.licenseDecline.clicked.connect(self._on_license_decline)
 
