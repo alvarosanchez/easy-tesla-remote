@@ -21,7 +21,7 @@ def engine_demo_api():
 
 
 @engine.handles(engine.events.REQUEST_REAL_API)
-def engine_demo_api():
+def engine_real_api():
     logger.debug('Engine requested a real API')
     engine.switch_api(TeslaApi())
 
