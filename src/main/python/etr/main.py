@@ -7,6 +7,7 @@ from qt_interface.main_window import MainWindow
 from engine.app_engine import AppEngine
 from engine.tesla.api import TeslaApi
 from engine.tesla.api_mock import TeslaApiMock
+from file_recorder.recorder import FileRecorder
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,11 @@ if __name__ == '__main__':
         format='%(asctime)s %(thread)d %(message)s'
     )
 
-    # QT with FBS context
+    # Frame recorder
+    recorder = FileRecorder(engine, 'C:\\Test_Path')
+    recorder.start_recording()
+
+    # QT UI with FBS context
     appctxt = ApplicationContext()
     main_window = MainWindow(engine)
     main_window.show()
@@ -40,5 +45,8 @@ if __name__ == '__main__':
     # AppEngine uses a long lived thread. This call
     # is required to ensure that the thread terminates
     engine.poll_stop()
+
+    # Stop frame recording
+    recorder.stop_recording()
 
     sys.exit(exit_code)
