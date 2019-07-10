@@ -1,7 +1,10 @@
 import json
 import logging
 from datetime import datetime
-from os import path
+from os import (
+    path,
+    makedirs,
+)
 from queue import (
     Queue,
     Full,
@@ -25,12 +28,19 @@ class FileRecorder:
 
     def __init__(self, engine, destination_path=None, daemon=False):
         """
-        :param engine: engine to record from
-        :param destination_path: directory where the resulting files will be stored
-        :param daemon: sets whether a daemon thread will be used by the recorder
+        :param engine: engine to record from.
+        :param destination_path: (optional) directory where the resulting files will be stored.
+        If no path is provided the frames are stored in the user's home under etr_recordings.
+        :param daemon: (optional) sets whether a daemon thread will be used by the recorder.
+        Defaults to False.
         """
         self._app_engine = engine
-        self.destination_path = destination_path
+
+        if destination_path != None:
+            self.destination_path = destination_path
+        else:
+            self.destination_path = path.join(path.expanduser('~'), 'etr_recordings')
+
         self.wire_events()
         self._stop_recording = Event()
         self._recording_stopped = Event()
@@ -62,6 +72,7 @@ class FileRecorder:
         """
         if self._recording_stopped.is_set():
             logger.debug('Starting recording')
+            self._ensure_directory_exists()
             self._stop_recording.clear()
             self._thread.start()
         else:
@@ -76,6 +87,10 @@ class FileRecorder:
         """
         logger.debug('Stopping recording')
         self._stop_recording.set()
+
+    def _ensure_directory_exists(self):
+        if not path.exists(self.destination_path):
+            makedirs(self.destination_path)
 
     def _on_frames_available(self, frames):
         if not self._recording_stopped.is_set():

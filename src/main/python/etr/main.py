@@ -33,7 +33,7 @@ if __name__ == '__main__':
     )
 
     # Frame recorder
-    recorder = FileRecorder(engine, 'C:\\Test_Path')
+    recorder = FileRecorder(engine)
     recorder.start_recording()
 
     # QT UI with FBS context
