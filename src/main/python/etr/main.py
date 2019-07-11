@@ -1,5 +1,6 @@
 import sys
 import logging
+import time
 
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
@@ -15,20 +16,25 @@ from file_recorder.replayer import FileReplayer
 logger = logging.getLogger(__name__)
 engine = AppEngine(TeslaApi())
 
-engine.poll_rate = 0.25
+# Frame recorder
+recorder = FileRecorder(engine)
 
 @engine.handles(engine.events.REQUEST_DEMO_API)
 def engine_demo_api():
     logger.debug('Engine requested a demo API')
+    recorder.stop_recording()
+    time.sleep(0.5)
     replayer = FileReplayer()
     replayer.prepare_frames()
+    engine.poll_rate = 1
     engine.switch_api(TeslaApiReplay(replayer), True)
-    # engine.switch_api(TeslaApiMock(), True)
 
 
 @engine.handles(engine.events.REQUEST_REAL_API)
 def engine_real_api():
     logger.debug('Engine requested a real API')
+    engine.poll_rate = 3
+    recorder.start_recording()
     engine.switch_api(TeslaApi())
 
 
@@ -38,9 +44,8 @@ if __name__ == '__main__':
         format='%(asctime)s %(thread)d %(message)s'
     )
 
-    ## Frame recorder
-    # recorder = FileRecorder(engine)
-    # recorder.start_recording()
+    # Enable recorder
+    recorder.start_recording()
 
     # QT UI with FBS context
     appctxt = ApplicationContext()
@@ -52,7 +57,7 @@ if __name__ == '__main__':
     # is required to ensure that the thread terminates
     engine.poll_stop()
 
-    ## Stop frame recording
-    # recorder.stop_recording()
+    # Stop frame recording
+    recorder.stop_recording()
 
     sys.exit(exit_code)

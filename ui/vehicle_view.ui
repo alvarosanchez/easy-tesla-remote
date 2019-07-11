@@ -576,7 +576,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
+                <item row="4" column="0">
                  <widget class="QLabel" name="label_8">
                   <property name="minimumSize">
                    <size>
@@ -589,7 +589,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
+                <item row="4" column="1">
                  <widget class="QLabel" name="carDoorsLocked">
                   <property name="text">
                    <string>carDoorsLocked</string>
@@ -605,7 +605,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
+                <item row="2" column="0">
                  <widget class="QLabel" name="label_9">
                   <property name="minimumSize">
                    <size>
@@ -618,7 +618,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
+                <item row="2" column="1">
                  <widget class="QLabel" name="carSpeed">
                   <property name="text">
                    <string>carSpeed</string>
@@ -627,14 +627,14 @@
                    <string notr="true">drive_state.speed</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
+                   <string notr="true">string_speed</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="0">
+                <item row="6" column="0">
                  <widget class="QLabel" name="label_34">
                   <property name="minimumSize">
                    <size>
@@ -647,7 +647,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="1">
+                <item row="6" column="1">
                  <widget class="QLabel" name="carSentryEnabled">
                   <property name="text">
                    <string>carSentryEnabled</string>
@@ -663,14 +663,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="8" column="0">
+                <item row="10" column="0">
                  <widget class="QLabel" name="label_36">
                   <property name="text">
                    <string>User Present:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="8" column="1">
+                <item row="10" column="1">
                  <widget class="QLabel" name="carUserPresent">
                   <property name="text">
                    <string>carUserPresent</string>
@@ -686,14 +686,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="9" column="0">
+                <item row="11" column="0">
                  <widget class="QLabel" name="label_37">
                   <property name="text">
                    <string>Speed Limit Active:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="9" column="1">
+                <item row="11" column="1">
                  <widget class="QLabel" name="carSpeedLimitActive">
                   <property name="text">
                    <string>carSpeedLimitActive</string>
@@ -709,14 +709,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="10" column="0">
+                <item row="12" column="0">
                  <widget class="QLabel" name="label_38">
                   <property name="text">
                    <string>Speed Limit:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="10" column="1">
+                <item row="12" column="1">
                  <widget class="QLabel" name="carSpeedLimit">
                   <property name="text">
                    <string>carSpeedLimit</string>
@@ -732,7 +732,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="11" column="1">
+                <item row="13" column="1">
                  <widget class="QLabel" name="carValetMode">
                   <property name="text">
                    <string>carValetMode</string>
@@ -748,21 +748,21 @@
                   </property>
                  </widget>
                 </item>
-                <item row="11" column="0">
+                <item row="13" column="0">
                  <widget class="QLabel" name="label_40">
                   <property name="text">
                    <string>Valet Mode Enabled:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="0">
+                <item row="7" column="0">
                  <widget class="QLabel" name="label_41">
                   <property name="text">
                    <string>Charge Port Open:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="1">
+                <item row="7" column="1">
                  <widget class="QLabel" name="carChargePortOpen">
                   <property name="text">
                    <string>carChargePortOpen</string>
@@ -778,14 +778,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="0">
+                <item row="8" column="0">
                  <widget class="QLabel" name="label_42">
                   <property name="text">
                    <string>Charge Port Latch:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="1">
+                <item row="8" column="1">
                  <widget class="QLabel" name="carChargePortLatch">
                   <property name="text">
                    <string>carChargePortLatched</string>
@@ -801,14 +801,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="7" column="0">
+                <item row="9" column="0">
                  <widget class="QLabel" name="label_39">
                   <property name="text">
                    <string>C.Port Winter Mode:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="7" column="1">
+                <item row="9" column="1">
                  <widget class="QLabel" name="carChargePortWinter">
                   <property name="text">
                    <string>carChargePortWinter</string>
@@ -824,14 +824,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="12" column="0">
+                <item row="14" column="0">
                  <widget class="QLabel" name="label_43">
                   <property name="text">
                    <string>Car In Service:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="12" column="1">
+                <item row="14" column="1">
                  <widget class="QLabel" name="carInService">
                   <property name="text">
                    <string>carInService</string>
@@ -847,102 +847,153 @@
                   </property>
                  </widget>
                 </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QGroupBox" name="groupBox_4">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="title">
-                <string>Climate</string>
-               </property>
-               <layout class="QFormLayout" name="formLayout_7">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_15">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Cabin Temperature:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLabel" name="carCabinTemp">
-                  <property name="text">
-                   <string>carCabinTemp</string>
-                  </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string>climate_state.inside_temp</string>
-                  </property>
-                  <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_temperature</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="1" column="0">
-                 <widget class="QLabel" name="label_16">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>0</height>
-                   </size>
-                  </property>
+                 <widget class="QLabel" name="label_48">
                   <property name="text">
-                   <string>Outside Temperature:</string>
+                   <string>Shift:</string>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QLabel" name="carOutsideTemp">
+                 <widget class="QLabel" name="carShift">
                   <property name="text">
-                   <string>carOutsideTemp</string>
+                   <string>carShift</string>
                   </property>
                   <property name="jsonAttribute" stdset="0">
-                   <string notr="true">climate_state.outside_temp</string>
+                   <string notr="true">drive_state.shift_state</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_temperature</string>
+                   <string notr="true">string</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_17">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>0</height>
-                   </size>
-                  </property>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_49">
                   <property name="text">
-                   <string>Climate Enabled:</string>
+                   <string>Engine Power:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
-                 <widget class="QLabel" name="carClimateEnabled">
+                <item row="3" column="1">
+                 <widget class="QLabel" name="carPower">
                   <property name="text">
-                   <string>carClimateEnabled</string>
+                   <string>carPower</string>
                   </property>
                   <property name="jsonAttribute" stdset="0">
-                   <string notr="true">climate_state.is_climate_on</string>
+                   <string notr="true">drive_state.power</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
+                   <string notr="true">string_power</string>
+                  </property>
+                  <property name="targetProperty" stdset="0">
+                   <string notr="true">text</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_7">
+               <property name="title">
+                <string>Car Position</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_13">
+                <item>
+                 <layout class="QFormLayout" name="formLayout_20">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_55">
+                    <property name="minimumSize">
+                     <size>
+                      <width>130</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Heading:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="carHeading">
+                    <property name="text">
+                     <string>carHeading</string>
+                    </property>
+                    <property name="jsonAttribute" stdset="0">
+                     <string>drive_state.heading</string>
+                    </property>
+                    <property name="valueAdapter" stdset="0">
+                     <string notr="true">string</string>
+                    </property>
+                    <property name="targetProperty" stdset="0">
+                     <string notr="true">text</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_51">
+                    <property name="text">
+                     <string>Latitude:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="carLatitude">
+                    <property name="text">
+                     <string>carLatitude</string>
+                    </property>
+                    <property name="jsonAttribute" stdset="0">
+                     <string notr="true">drive_state.latitude</string>
+                    </property>
+                    <property name="valueAdapter" stdset="0">
+                     <string>string</string>
+                    </property>
+                    <property name="targetProperty" stdset="0">
+                     <string>text</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="label_53">
+                    <property name="text">
+                     <string>Longitude</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLabel" name="carLongitude">
+                    <property name="text">
+                     <string>carLongitude</string>
+                    </property>
+                    <property name="jsonAttribute" stdset="0">
+                     <string notr="true">drive_state.longitude</string>
+                    </property>
+                    <property name="targetProperty" stdset="0">
+                     <string notr="true">text</string>
+                    </property>
+                    <property name="valueAdapter" stdset="0">
+                     <string notr="true">string</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="linkToLocation">
+                  <property name="text">
+                   <string>linkToLocation</string>
+                  </property>
+                  <property name="openExternalLinks">
+                   <bool>true</bool>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string notr="true">placeholder</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">location_link</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
@@ -1395,6 +1446,108 @@
                   </property>
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">charge_efficiency</string>
+                  </property>
+                  <property name="targetProperty" stdset="0">
+                   <string notr="true">text</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="title">
+                <string>Climate</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_7">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_15">
+                  <property name="minimumSize">
+                   <size>
+                    <width>130</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Cabin Temperature:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="carCabinTemp">
+                  <property name="text">
+                   <string>carCabinTemp</string>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string>climate_state.inside_temp</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">string_temperature</string>
+                  </property>
+                  <property name="targetProperty" stdset="0">
+                   <string notr="true">text</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_16">
+                  <property name="minimumSize">
+                   <size>
+                    <width>130</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Outside Temperature:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="carOutsideTemp">
+                  <property name="text">
+                   <string>carOutsideTemp</string>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string notr="true">climate_state.outside_temp</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">string_temperature</string>
+                  </property>
+                  <property name="targetProperty" stdset="0">
+                   <string notr="true">text</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_17">
+                  <property name="minimumSize">
+                   <size>
+                    <width>130</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Climate Enabled:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLabel" name="carClimateEnabled">
+                  <property name="text">
+                   <string>carClimateEnabled</string>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string notr="true">climate_state.is_climate_on</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">string</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
