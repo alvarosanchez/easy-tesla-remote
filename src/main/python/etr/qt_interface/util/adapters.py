@@ -213,3 +213,15 @@ def charge_efficiency(frame, key, qwidget, widget_property):
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
+
+
+@AdapterTracker.adapter('location_link')
+def location_link(frame, key, qwidget, widget_property):
+    latitude = get_dictionary_value(frame, 'drive_state.latitude')
+    longitude = get_dictionary_value(frame, 'drive_state.longitude')
+    
+    result = f'<a href="http://maps.google.es/?q={latitude},{longitude}">View on map</a>'
+    
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
