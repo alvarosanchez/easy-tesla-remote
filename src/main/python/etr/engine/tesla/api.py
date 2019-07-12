@@ -1,10 +1,13 @@
 import json
 import requests
 
+from urllib.parse import urljoin
+from .endpoints import SupportedEndpoints
+
 
 class TeslaApiError(Exception):
     
-    def __init__(self, message, status_code, full_response):
+    def __init__(self, message, status_code=None, full_response=None):
         super().__init__(message)
         self.message = message
         self.status_code = status_code
@@ -22,41 +25,28 @@ class TeslaApi():
     def __init__(self, token=''):
         self.base_url = 'https://owner-api.teslamotors.com'
         self.user_agent = 'etr'
+        self.endpoints = SupportedEndpoints()
         self.client_id = '81527cff06843c8634fdc09e8ac0abefb46ac849f38fe1e431c2ef2106796384'
         self.client_secret = 'c7257eb71a564034f9419ee651c7d0e5f7aa6bfbd18bafb5c5c033b093bb2fa3'
         self.token = token
 
-    def _build_headers(self):
-        return {
-            'User-Agent': self.user_agent,
-            'Accept': 'application/json',
-            'Authorization': f'Bearer {self.token}'
-        }
+    def refresh_token(self, refresh_token):
+        """
+        Get new access and refresh tokens using the refresh token
 
-    def _validate_response(self, response, expected_code):
-        if response.status_code != expected_code:
-            message = f'Response status code is {response.status_code} '\
-                      f'but expected {expected_code}'
-            raise TeslaApiError(message, response.status_code, response)
+        See: https://tesla-api.timdorr.com/api-basics/authentication
 
-        if 'response' not in response.json():
-            message = f"Unsupported content. 'response' key is missing"
-            raise TeslaApiError(message, response.status_code, response)
+        :param refresh_token: refresh token for the account
+        :return: dictionary containing the API response
+        """
+        parameters = [
+            'refresh_token',
+            self.client_id,
+            self.client_secret,
+            refresh_token
+        ]
 
-    def _send_request(self, url, method, expected_code):
-        headers = self._build_headers()
-
-        response = None
-        if method == 'GET':
-            response = requests.get(url, headers=headers)
-        elif method == 'POST':
-            response = requests.post(url, headers=headers)
-        else:
-            raise TeslaApiError(f"Unsupported method '{method}'", None, None)
-
-        self._validate_response(response, expected_code)
-
-        return response.json()['response']
+        return self._send_request(self.endpoints.REFRESH_TOKEN, parameters)
 
     def get_token(self, email, password):
         """
@@ -68,101 +58,56 @@ class TeslaApi():
         :param password: user password for the Tesla site
         :return: dictionary containing the API response
         """
-        headers = {
+        parameters = [
+            'password',
+            self.client_id,
+            self.client_secret,
+            email,
+            password
+        ]
+
+        return self._send_request(self.endpoints.AUTHENTICATE, parameters)
+
+    def _send_request(self, endpoint, *args):
+        if endpoint not in self.endpoints.supported_endpoints:
+            raise TeslaApiError(f'Endpoint {endpoint} not supported')
+
+        config = self.endpoints.get_config(endpoint)
+        url = urljoin(self.base_url, config['URL'])
+        url = url.format(args)
+
+        headers = self._build_headers(config['AUTH'])
+
+        response = None
+        if config['METHOD'] == 'GET':
+            response = requests.get(url, headers=headers)
+        elif config['METHOD'] == 'POST':
+            response = requests.post(url, headers=headers)
+        else:
+            raise TeslaApiError(f"Method {config['METHOD']} not supported")
+
+        self._validate_response(response, config)
+
+        if 'RESULT_KEY' in config:
+            return response.json()[config['RESULT_KEY']]
+        else:
+            return response.json()
+
+    def _build_headers(self, include_token):
+        result = {
             'User-Agent': self.user_agent,
             'Accept': 'application/json'
         }
+        if include_token:
+            result['Authorization'] = f'Bearer {self.token}'
+        return result
 
-        parameters = {
-            'grant_type': 'password',
-            'client_id': self.client_id,
-            'client_secret': self.client_secret,
-            'email': email,
-            'password': password
-        }
+    def _validate_response(self, response, endpoint):
+        if response.status_code != endpoint['VALID_RESULT']:
+            message = f'Response status code is {response.status_code} '\
+                      f'but expected {expected_code}'
+            raise TeslaApiError(message, response.status_code, response)
 
-        response = requests.post(f'{self.base_url}/oauth/token',
-                                 headers=headers,
-                                 params=parameters)
-
-        return response.json()
-
-    def refresh_token(self, refresh_token):
-        """
-        Get new access and refresh tokens using the refresh token
-
-        See: https://tesla-api.timdorr.com/api-basics/authentication
-
-        :param refresh_token: refresh token for the account
-        :return: dictionary containing the API response
-        """
-        headers = {
-            'User-Agent': self.user_agent,
-            'Accept': 'application/json'
-        }
-
-        parameters = {
-            'grant_type': 'refresh_token',
-            'client_id': self.client_id,
-            'client_secret': self.client_secret,
-            'refresh_token': refresh_token
-        }
-
-        response = requests.post(f'{self.base_url}/oauth/token',
-                                 headers=headers,
-                                 params=parameters)
-
-        return response.json()
-
-    def get_vehicles(self):
-        """
-        Get a list of the owned vehicles with some basic information about them
-        
-        See: https://tesla-api.timdorr.com/api-basics/vehicles
-        """
-        url = f'{self.base_url}/api/1/vehicles/'
-        return self._send_request(url, 'GET', 200)
-
-    def get_vehicle_data(self, id):
-        """
-        Get all the availabe information about a vehicle
-        
-        See: https://tesla-api.timdorr.com/vehicle/state/data
-
-        :param id: id of the car (not the vehicle_id)
-        """
-        url = f'{self.base_url}/api/1/vehicles/{id}/vehicle_data'
-        return self._send_request(url, 'GET', 200)
-
-    def wake_up(self, id):
-        """
-        Try to wake up a car
-
-        See: https://tesla-api.timdorr.com/vehicle/commands/wake
-
-        :param id: id of the car (not the vehicle_id)
-        """
-        url = f'{self.base_url}/api/1/vehicles/{id}/wake_up'
-        return self._send_request(url, 'POST', 200)
-
-    def honk(self, id):
-        """
-        Try to wake up a car
-
-        See: https://tesla-api.timdorr.com/vehicle/commands/alerts
-
-        :param id: id of the car (not the vehicle_id)
-        """
-        url = f'{self.base_url}/api/1/vehicles/{id}/command/honk_horn'
-        return self._send_request(url, 'POST', 200)
-
-    def flash_lights(self, id):
-        """
-        Try to flash the car lights
-
-        See: https://tesla-api.timdorr.com/vehicle/commands/alerts
-
-        :param id: id of the car (not the vehicle_id)
-        """
-        url = f'{self.base_url}/api/1/vehicles/{id}/command/flash_lights'
-        return self._send_request(url, 'POST', 200)
+        if 'RESULT_KEY' in endpoint and endpoint['RESULT_KEY'] not in response.json():
+            message = f"Unsupported response. '{endpoint['RESULT_KEY']}' key is missing"
+            raise TeslaApiError(message, response.status_code, response)
