@@ -4,14 +4,17 @@ from PyQt5.QtWidgets import (
     QMainWindow, 
     QMessageBox,
 )
+from PyQt5.QtCore import QTimer
 
 from .util.engine_signals import EngineSignals
 from .auto_generated.main_window_auto import Ui_MainWindow
 from .vehicle_view import VehicleView
 from .credentials_dialog import CredentialsDialog
 from .token_dialog import TokenDialog
-
-from engine.app_engine import EngineValidationError
+from .option_codes_dialog import OptionCodesDialog
+from .license_dialog import LicenseDialog
+from .about_dialog import AboutDialog
+from . import __version__
 
 
 logger = logging.getLogger(__name__)
@@ -24,6 +27,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.app_engine = app_engine
         self.setupUi(self)
 
+        self.initial_connection_timer = QTimer(self)
+        self.initial_connection_timer.timeout.connect(self._on_initial_connection)
+        self.load_abort_timer = QTimer(self)
+        self.load_abort_timer.timeout.connect(self._on_load_abort)
+
         self.pending_commands = []
 
         self.credentials_dialog = None
@@ -33,20 +41,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.engine_signals.poll_starting.connect(self._on_engine_poll_starting)
         self.engine_signals.poll_stopped.connect(self._on_engine_poll_stop)
         self.engine_signals.poll_stopping.connect(self._on_engine_poll_stop)
-        self.engine_signals.credentials_result.connect(self._on_engine_credentials_result)
         self.engine_signals.command_completed.connect(self._on_engine_command_completed)
-        self.engine_signals.api_switched.connect(self._on_engine_api_switched)
 
         self.actionExit.triggered.connect(self.close)
         self.actionLoad.triggered.connect(self._on_connect)
         self.actionDisconnect.triggered.connect(self._on_disconnect)
         self.actionGet_Account_Keys.triggered.connect(self._on_show_token)
+        self.actionOption_Code_Translator.triggered.connect(self._on_option_code_translator)
+        self.actionAbout.triggered.connect(self._on_about_dialog)
 
     def showEvent(self, event):
-        self._on_connect()
+        license_dialog = LicenseDialog(self, True)
+        if license_dialog.exec_() == 1:
+            self.initial_connection_timer.start(1)
+        else:
+            self.load_abort_timer.start(1)
 
     def closeEvent(self, event):
-        logger.info('Main window closed unwiring engine events')
+        logger.debug('Main window closed unwiring engine events')
         self.engine_signals.unwire_events()
 
     def show_dialog(self, text, icon=QMessageBox.Information):
@@ -55,16 +67,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         message_box.setText(text)
         message_box.exec_()
 
+    def _on_initial_connection(self):
+        self.initial_connection_timer.stop()
+        self._on_connect()
+
+    def _on_load_abort(self):
+        self.load_abort_timer.stop()
+        self.close()
+
+    def _on_about_dialog(self):
+        dialog = AboutDialog(self.app_engine.get_engine_version(), __version__, self)
+        dialog.exec_()
+
     def _on_show_token(self):
         dialog = TokenDialog(self.app_engine.get_current_token(), self)
         dialog.exec_()
 
+    def _on_option_code_translator(self):
+        dialog = OptionCodesDialog(self.app_engine, self)
+        dialog.exec_()
+
     def _on_disconnect(self):
         self.app_engine.poll_stop()
-        self.app_engine.reset_api_token()
+        self.app_engine.enable_real_mode()
 
     def _on_connect(self):
-        logger.info('Sending start poll to engine')
+        logger.debug('Sending start poll to engine')
         self.app_engine.poll_start()
 
     def _on_engine_poll_starting(self):
@@ -110,7 +138,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.show_dialog(message, QMessageBox.Warning)
 
     def _on_new_frames_ready(self, frames):
-        logger.info('Loading new frames')
+        logger.debug('Loading new frames')
 
         for frame in frames:
             existing_tab = None
@@ -137,52 +165,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             existing_tab.load_frame(frame)
 
-    def _on_engine_credentials_result(self, command_id, response, result, error):
-        logger.debug(f'credentials result {command_id}, {result}, {error}')
-        if result:
-            dialog = self.credentials_dialog
-            self.credentials_dialog = None
-            dialog.accept()
-        else:
-            self.credentials_dialog.show_message(error)
-            self.credentials_dialog.switch_input_status(True)
-
     def _on_engine_credentials_required(self):
         logger.debug('Asking user for credentials')
         if self.credentials_dialog == None:
-            self.credentials_dialog = CredentialsDialog(self)
-            self.credentials_dialog.submit_credentials.connect(
-                self._on_credentials_dialog_submited
-            )
-            self.credentials_dialog.demo_mode.connect(
-                self._on_credentials_demo_mode
-            )
+            self.credentials_dialog = CredentialsDialog(self.app_engine, self)
             if self.credentials_dialog.exec_() == 1:
                 self.app_engine.poll_start()
             self.credentials_dialog = None
-
-    def _on_credentials_dialog_submited(self):
-        try:
-            self.credentials_dialog.switch_input_status(False)
-            self.credentials_dialog.show_message('')
-            self.app_engine.load_credentials(
-                self.credentials_dialog.get_user_name(),
-                self.credentials_dialog.get_password(),
-                self.credentials_dialog.get_token()
-            )
-        except EngineValidationError as error:
-            self.credentials_dialog.switch_input_status(True)
-            self.credentials_dialog.show_message(str(error))
-
-    def _on_credentials_demo_mode(self):
-        self.credentials_dialog.switch_input_status(False)
-        self.app_engine.enable_demo_mode()
-
-    def _on_engine_api_switched(self):
-        if self.credentials_dialog != None:
-            dialog = self.credentials_dialog
-            self.credentials_dialog = None
-            dialog.accept()
 
     def _on_vehicle_wake_up(self, car_id):
         logger.debug(f'Waking up car {car_id}')

@@ -31,7 +31,7 @@ if __name__ == '__main__':
         format='%(asctime)s %(thread)d %(message)s'
     )
 
-    #QT with FBS context
+    # QT with FBS context
     appctxt = ApplicationContext()
     main_window = MainWindow(engine)
     main_window.show()
