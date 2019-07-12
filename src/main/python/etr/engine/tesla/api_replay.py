@@ -1,7 +1,11 @@
 from .api import TeslaApiError
+from .endpoints import SupportedEndpoints
 
 
 class TeslaApiReplay():
+    """
+    Replay a set of pre recorded API responses
+    """
 
     token_response = {
         "access_token": "aaaaaaaaaaaaaaaa",
@@ -20,8 +24,12 @@ class TeslaApiReplay():
     }
 
     def __init__(self, replayer):
+        """
+        :param replayer: replayer object that will provide the data
+        """
         self.token = 'Replay Token'
         self.replayer = replayer
+        self.urls = SupportedEndpoints
 
     def get_token(self, email, password):
         return self.token_response
@@ -29,17 +37,15 @@ class TeslaApiReplay():
     def refresh_token(self, refresh_token):
         return self.refresh_token_response
 
-    def get_vehicles(self):
-        return self.replayer.next_status()
+    def send_request(self, endpoint, *args):
+        """
+        Return the next response from the replayer and the endpoint
 
-    def get_vehicle_data(self, id):
-        return self.replayer.next_frame(id)
-
-    def wake_up(self, id):
-        raise TeslaApiError('not_found', 404, {})       
-
-    def honk(self, id):
-        raise TeslaApiError('not_found', 404, {})
-
-    def flash_lights(self, id):
-        raise TeslaApiError('not_found', 404, {})
+        Only VEHICLE_LIST and VEHICLE_DATA endpoints are supported
+        """
+        if endpoint == self.urls.VEHICLE_LIST:
+            return self.replayer.next_status()
+        elif endpoint == self.urls.VEHICLE_DATA:
+            return self.replayer.next_frame(args[0])
+        else:
+             raise TeslaApiError('not_found', 404, {})

@@ -8,17 +8,18 @@ class SupportedEndpoints():
     HONK_HORN = 'HONK_HORN'
     FLASH_LIGHTS = 'FLASH_LIGHTS'
 
-    def __init__(self):
-        self.supported_endpoints = [
-            self.AUTHENTICATE,
-            self.VEHICLE_LIST,
-            self.VEHICLE_DATA,
-            self.WAKE_UP,
-            self.HONK_HORN,
-            self.FLASH_LIGHTS
-        ]
+    supported_endpoints = [
+        AUTHENTICATE,
+        REFRESH_TOKEN,
+        VEHICLE_LIST,
+        VEHICLE_DATA,
+        WAKE_UP,
+        HONK_HORN,
+        FLASH_LIGHTS
+    ]
 
-    def get_config(self, endpoint):
+    @classmethod
+    def get_config(cls, endpoint):
         return tesla_endpoints[endpoint]
 
 
