@@ -7,7 +7,6 @@ from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from qt_interface.main_window import MainWindow
 from engine.app_engine import AppEngine
 from engine.tesla.api import TeslaApi
-from engine.tesla.api_mock import TeslaApiMock
 from engine.tesla.api_replay import TeslaApiReplay
 from file_recorder.recorder import FileRecorder
 from file_recorder.replayer import FileReplayer

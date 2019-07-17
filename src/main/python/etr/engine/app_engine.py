@@ -13,6 +13,7 @@ from .util.option_codes import (
 )
 from .util.thread_safe_counter import ThreadSafeCounter
 from .tesla.api import TeslaApiError
+from .tesla.endpoints import SupportedEndpoints
 from . import __version__
 
 
@@ -21,12 +22,6 @@ logger = logging.getLogger(__name__)
 
 class EngineValidationError(Exception):
     pass
-
-
-class EngineCommands:
-    WAKE_UP = 'wake_up'
-    FLASH_LIGHTS = 'flash_lights'
-    HONK = 'honk'
 
 
 class EngineEvents:
@@ -61,7 +56,7 @@ class AppEngine(EventSupport):
 
     def __init__(self, tesla_api):
         super().__init__(EngineEvents.to_array())
-        self.commands = EngineCommands
+        self.commands = SupportedEndpoints
         self.events = EngineEvents
         self._terminate_poll = Event()
         self._poll_terminated = Event()
@@ -88,7 +83,7 @@ class AppEngine(EventSupport):
                 future_results = []
 
                 try:
-                    cars = self._tesla_api.get_vehicles()
+                    cars = self._tesla_api.send_request(self._tesla_api.urls.VEHICLE_LIST)
                 except TeslaApiError as error:
                     if error.status_code == 401:
                         self.raise_event(self.events.CREDENTIALS_REQUIRED)
@@ -101,7 +96,11 @@ class AppEngine(EventSupport):
                     for car in cars:
                         if car['state'] == 'online':
                             future_results.append(
-                                executor.submit(self._tesla_api.get_vehicle_data, car['id'])
+                                executor.submit(
+                                    self._tesla_api.send_request,
+                                    self._tesla_api.urls.VEHICLE_DATA,
+                                    car['id']
+                                )
                             )
                         else:
                             if car['state'] != 'asleep' and car['state'] != 'offline':
@@ -123,12 +122,12 @@ class AppEngine(EventSupport):
         logger.info(f'Poller terminated')
         self.raise_event(self.events.POLL_STOPPED)
 
-    def _thread_api_command(self, command_id, command_name, function, *args):
+    def _thread_api_command(self, command_id, command_name, *args):
         logger.info(f'Api command thread started')
         try:
             self._api_not_updating.wait()
             with self._api_active_accesses:
-                result = function(*args)
+                result = self._tesla_api.send_request(command_name, *args)
             self.raise_event(
                 self.events.COMMAND_COMPLETED,
                 command_id,
@@ -161,7 +160,7 @@ class AppEngine(EventSupport):
             if token:
                 # Test the token
                 self._tesla_api.token = token
-                self._tesla_api.get_vehicles()
+                self._tesla_api.send_request(self._tesla_api.urls.VEHICLE_LIST)
                 result = { 'access_token': token }
             else:
                 # No token so use the user and password to obtain a new one
@@ -196,20 +195,10 @@ class AppEngine(EventSupport):
     def send_car_command(self, command_name, *args):
         command_id = uuid.uuid4().hex
 
-        function_map = {
-            self.commands.WAKE_UP: self._tesla_api.wake_up,
-            self.commands.HONK: self._tesla_api.honk,
-            self.commands.FLASH_LIGHTS: self._tesla_api.flash_lights
-        }
-
-        if command_name not in function_map:
-            raise EngineValidationError(f'{command_name} command not supported')
-
         self._thread_pool.submit(
-            self._thread_api_command, 
+            self._thread_api_command,
             command_id,
             command_name,
-            function_map[command_name], 
             *args
         )
 

@@ -131,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     message = 'Wake up command failed'
                 elif command_name == self.app_engine.commands.FLASH_LIGHTS:
                     message = 'Flash lights command failed'
-                elif command_name == self.app_engine.commands.HONK:
+                elif command_name == self.app_engine.commands.HONK_HORN:
                     message = 'Honk command failed'
                 else:
                     message = 'Command failed'
