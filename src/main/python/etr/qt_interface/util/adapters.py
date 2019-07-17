@@ -73,7 +73,7 @@ def string_speed(frame, key, qwidget, widget_property):
     value = get_dictionary_value(frame, key)
     distance_unit = get_dictionary_value(frame, 'gui_settings.gui_distance_units')
 
-    if value != None and distance_unit == 'km\hr':
+    if value != None and distance_unit == 'km/hr':
         value = value * 1.60934
 
     result = f'{round(value, 2)} {distance_unit}' if value != None else ''
@@ -85,10 +85,8 @@ def string_speed(frame, key, qwidget, widget_property):
 @AdapterTracker.adapter('string_power')
 def string_power(frame, key, qwidget, widget_property):
     value = get_dictionary_value(frame, key)
-    power_unit = get_dictionary_value(frame, 'gui_settings.gui_charge_rate_units')
-    if power_unit == None:
-        power_unit = ''
-    result = f'{value} {power_unit}' if value != None else ''
+
+    result = f'{value} kW' if value != None else ''
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
@@ -97,9 +95,7 @@ def string_power(frame, key, qwidget, widget_property):
 @AdapterTracker.adapter('string_energy')
 def string_energy(frame, key, qwidget, widget_property):
     value = get_dictionary_value(frame, key)
-    power_unit = get_dictionary_value(frame, 'gui_settings.gui_charge_rate_units')
-    power_unit = f'{power_unit}h' if power_unit != None else ''
-    result = f'{value} {power_unit}' if value != None else ''
+    result = f'{value} kWh' if value != None else ''
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
@@ -109,6 +105,42 @@ def string_energy(frame, key, qwidget, widget_property):
 def string_current(frame, key, qwidget, widget_property):
     value = get_dictionary_value(frame, key)
     result = f'{value} A' if value != None else ''
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
+
+
+@AdapterTracker.adapter('string_phases')
+def string_current(frame, key, qwidget, widget_property):
+    value = get_dictionary_value(frame, key)
+
+    result = ''
+
+    if value != None:
+        if value != 1:
+            result = '3'
+        else:
+            result = '1'
+
+
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
+
+
+@AdapterTracker.adapter('string_current_adjusted')
+def string_current(frame, key, qwidget, widget_property):
+    value = get_dictionary_value(frame, key)
+    phases = get_dictionary_value(frame, 'charge_state.charger_phases')
+
+    result = ''
+
+    if phases != None:
+        if phases != 1:
+            phases = 3
+        
+        result = f'{value * phases} A' if value != None else ''
+
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
@@ -169,17 +201,44 @@ def string_estimated_max_range(frame, key, qwidget, widget_property):
 
 @AdapterTracker.adapter('charge_power')
 def string_charge_power(frame, key, qwidget, widget_property):
-    current = get_dictionary_value(frame, key)
-    voltage = get_dictionary_value(frame, 'charge_state.charger_voltage')
-    phases = get_dictionary_value(frame, 'charge_state.charger_phases')
+    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
 
     value = None
 
-    if current != None and voltage != None:
-        value = current * voltage / 1000
-        if phases == 3:
-            value = value * 1.732
-        value = f'{round(value, 2)} kW'
+    if fast:
+        power = get_dictionary_value(frame, 'drive_state.power')
+        if power != None:
+            power = abs(power)
+            value = f'{round(power, 2)} kW'
+
+    else:
+        current = get_dictionary_value(frame, 'charge_state.charge_rate')
+        voltage = get_dictionary_value(frame, 'charge_state.charger_voltage')
+        if current != None and voltage != None:
+            value = current * voltage / 1000
+            value = f'{round(value, 2)} kW'
+
+    if qwidget != None:
+        qwidget.setProperty(widget_property, value)
+    return value
+
+
+@AdapterTracker.adapter('charge_power_drawn')
+def string_charge_power_drawn(frame, key, qwidget, widget_property):
+    current = get_dictionary_value(frame, key)
+    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
+
+    value = None
+
+    if not fast:
+        voltage = get_dictionary_value(frame, 'charge_state.charger_voltage')
+        phases = get_dictionary_value(frame, 'charge_state.charger_phases')
+
+        if current != None and voltage != None:
+            value = current * voltage / 1000
+            if phases != 1:
+                value = value * 3
+            value = f'{round(value, 2)} kW'
 
     if qwidget != None:
         qwidget.setProperty(widget_property, value)
@@ -203,12 +262,15 @@ def string_time(frame, key, qwidget, widget_property):
 @AdapterTracker.adapter('charge_efficiency')
 def charge_efficiency(frame, key, qwidget, widget_property):
     total_current = get_dictionary_value(frame, 'charge_state.charger_actual_current')
+    phases = get_dictionary_value(frame, 'charge_state.charger_phases')
     rate = get_dictionary_value(frame, 'charge_state.charge_rate')
 
     result = ''
 
-    if total_current != None and rate != None and total_current != 0:
-        result = f'{round(rate * 100 / total_current, 2)} %'
+    if total_current != None and rate != None and phases != None and total_current != 0:
+        if phases != 1:
+            phases = 3
+        result = f'{round(rate * 100 / (total_current * phases), 2)} %'
 
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
@@ -222,6 +284,31 @@ def location_link(frame, key, qwidget, widget_property):
     
     result = f'<a href="http://maps.google.es/?q={latitude},{longitude}">View on map</a>'
     
+    if qwidget != None:
+        qwidget.setProperty(widget_property, result)
+    return result
+
+
+@AdapterTracker.adapter('charge_tension')
+def charge_tension(frame, key, qwidget, widget_property):
+    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
+
+    result = None
+
+    if fast:
+        power = get_dictionary_value(frame, 'drive_state.power')
+        current = get_dictionary_value(frame, 'charge_state.charge_rate')
+
+        power = abs(power)
+
+        if power != None and current != None:
+            tension = round((power * 1000) / current, 2)
+            result = f'{tension} V'
+
+    else:
+        tension = get_dictionary_value(frame, 'charge_state.charger_voltage')
+        result = f'{tension} V' if tension != None and tension > 5 else ''
+
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
