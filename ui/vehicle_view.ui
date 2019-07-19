@@ -1179,7 +1179,7 @@
                    <string notr="true">charge_state.charger_actual_current</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_current</string>
+                   <string notr="true">string_current_adjusted</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
@@ -1208,7 +1208,7 @@
                    <string notr="true">charge_state.charge_current_request_max</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_current</string>
+                   <string notr="true">string_current_adjusted</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
@@ -1237,7 +1237,7 @@
                    <string notr="true">charge_state.charger_phases</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
+                   <string notr="true">string_phases</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
@@ -1263,10 +1263,10 @@
                    <string>carChargeVoltage</string>
                   </property>
                   <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charger_voltage</string>
+                   <string notr="true">none</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_tension</string>
+                   <string notr="true">charge_tension</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
@@ -1376,7 +1376,7 @@
                    <string notr="true">charge_state.charger_actual_current</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">charge_power</string>
+                   <string notr="true">charge_power_drawn</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>
