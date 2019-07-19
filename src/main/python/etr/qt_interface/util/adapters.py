@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from .dictionaries import get_dictionary_value
+from etr.engine.util.dictionaries import get_dictionary_value
 
 
 class AdapterTracker:

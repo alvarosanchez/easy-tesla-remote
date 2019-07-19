@@ -14,10 +14,7 @@ from etr.engine.util.option_codes import translate_codes
 
 from .auto_generated.vehicle_view_auto import Ui_VehicleView
 from .util.adapters import AdapterTracker
-from .util.dictionaries import (
-    dump_to_tupple_list,
-    get_dictionary_value,
-)
+from etr.engine.util.dictionaries import dump_to_tupple_list
 
 
 class VehicleView(QWidget, Ui_VehicleView):
