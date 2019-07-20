@@ -1,6 +1,16 @@
+import logging
+
 from datetime import timedelta
 
 from etr.engine.util.dictionaries import get_dictionary_value
+from etr.engine.util.extractors import (
+    get_charge_tension,
+    get_charge_power,
+    get_charge_current,
+)
+
+
+logger = logging.getLogger(__name__)
 
 
 class AdapterTracker:
@@ -25,7 +35,10 @@ class AdapterTracker:
     def execute_adapter(cls, adapter_name, frame, key, qwidget=None, widget_property='text'):
         adapter = cls.resolve_adapter(adapter_name)
         if adapter != None:
-            return adapter(frame, key, qwidget, widget_property)
+            try:
+                return adapter(frame, key, qwidget, widget_property)
+            except Exception as ex:
+                logger.error(ex)
         else:
             return None
 
@@ -101,10 +114,12 @@ def string_energy(frame, key, qwidget, widget_property):
     return result
 
 
-@AdapterTracker.adapter('string_current')
-def string_current(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    result = f'{value} A' if value != None else ''
+@AdapterTracker.adapter('current_to_battery')
+def current_to_battery(frame, key, qwidget, widget_property):
+    current = get_charge_current(frame)
+
+    result = f'{current} A' if current != None else ''
+
     if qwidget != None:
         qwidget.setProperty(widget_property, result)
     return result
@@ -201,22 +216,9 @@ def string_estimated_max_range(frame, key, qwidget, widget_property):
 
 @AdapterTracker.adapter('charge_power')
 def string_charge_power(frame, key, qwidget, widget_property):
-    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
+    power = get_charge_power(frame)
 
-    value = None
-
-    if fast:
-        power = get_dictionary_value(frame, 'drive_state.power')
-        if power != None:
-            power = abs(power)
-            value = f'{round(power, 2)} kW'
-
-    else:
-        current = get_dictionary_value(frame, 'charge_state.charge_rate')
-        voltage = get_dictionary_value(frame, 'charge_state.charger_voltage')
-        if current != None and voltage != None:
-            value = current * voltage / 1000
-            value = f'{round(value, 2)} kW'
+    value = f'{round(power, 2)} kW' if power != None else ''
 
     if qwidget != None:
         qwidget.setProperty(widget_property, value)
@@ -291,23 +293,9 @@ def location_link(frame, key, qwidget, widget_property):
 
 @AdapterTracker.adapter('charge_tension')
 def charge_tension(frame, key, qwidget, widget_property):
-    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
+    tension = get_charge_tension(frame)
 
-    result = None
-
-    if fast:
-        power = get_dictionary_value(frame, 'drive_state.power')
-        current = get_dictionary_value(frame, 'charge_state.charge_rate')
-
-        power = abs(power)
-
-        if power != None and current != None:
-            tension = round((power * 1000) / current, 2)
-            result = f'{tension} V'
-
-    else:
-        tension = get_dictionary_value(frame, 'charge_state.charger_voltage')
-        result = f'{tension} V' if tension != None and tension > 5 else ''
+    result = f'{round(tension, 2)} V' if tension != None else ''
 
     if qwidget != None:
         qwidget.setProperty(widget_property, result)

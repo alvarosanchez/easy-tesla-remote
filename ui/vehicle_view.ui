@@ -1399,7 +1399,7 @@
                    <string notr="true">charge_state.charge_rate</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_current</string>
+                   <string notr="true">current_to_battery</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">text</string>

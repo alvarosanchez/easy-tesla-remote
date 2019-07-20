@@ -528,7 +528,7 @@ class Ui_VehicleView(object):
         self.formLayout_8.setWidget(13, QtWidgets.QFormLayout.LabelRole, self.label_46)
         self.carChargeCurrentEffective = QtWidgets.QLabel(self.groupBox_5)
         self.carChargeCurrentEffective.setProperty("jsonAttribute", "charge_state.charge_rate")
-        self.carChargeCurrentEffective.setProperty("valueAdapter", "string_current")
+        self.carChargeCurrentEffective.setProperty("valueAdapter", "current_to_battery")
         self.carChargeCurrentEffective.setProperty("targetProperty", "text")
         self.carChargeCurrentEffective.setObjectName("carChargeCurrentEffective")
         self.formLayout_8.setWidget(13, QtWidgets.QFormLayout.FieldRole, self.carChargeCurrentEffective)
