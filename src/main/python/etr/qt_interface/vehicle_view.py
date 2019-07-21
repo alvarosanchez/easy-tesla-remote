@@ -13,7 +13,7 @@ from PyQt5.QtGui import (
 from etr.engine.util.option_codes import translate_codes
 
 from .auto_generated.vehicle_view_auto import Ui_VehicleView
-from .util.adapters import AdapterTracker
+from .util.adapters import execute_adapter
 from etr.engine.util.dictionaries import dump_to_tupple_list
 
 
@@ -94,12 +94,11 @@ class VehicleView(QWidget, Ui_VehicleView):
     def populate_overview(self, frame):
         for key in vars(self):
             attribute = getattr(self, key)
+
             if issubclass(type(attribute), QWidget):
-                mapping = attribute.property('jsonAttribute')
                 adapter = attribute.property('valueAdapter')
-                target_property = attribute.property('targetProperty')
-                if mapping != None and adapter != None and target_property != None:
-                    AdapterTracker.execute_adapter(adapter, frame, mapping, attribute, target_property)
+                if adapter != None:
+                    execute_adapter(adapter, frame, attribute)
 
     def on_action_wake_up(self):
         self.wake_up.emit(str(self.current_frame['id']))

@@ -1,8 +1,8 @@
 """
-Tests for etr.engine.util.extractors
+Tests for etr.engine.util.adapters
 """
 import pytest
-import etr.engine.util.extractors as extractors
+import etr.engine.util.adapters as adapters
 
 
 @pytest.mark.parametrize('frame,result', [
@@ -10,7 +10,7 @@ import etr.engine.util.extractors as extractors
     ({'gui_settings': {'gui_distance_units': 'mi/hr'}}, 'mi/hr')
 ])
 def test_get_speed_units(frame, result):
-    value = extractors.get_speed_units(frame)
+    value = adapters.get_speed_units(frame)
     assert value == result
 
 
@@ -19,7 +19,7 @@ def test_get_speed_units(frame, result):
     ({'gui_settings': {'gui_distance_units': 'mi/hr'}}, 'mi')
 ])
 def test_get_distance_units(frame, result):
-    value = extractors.get_distance_units(frame)
+    value = adapters.get_distance_units(frame)
     assert value == result
 
 
@@ -28,7 +28,7 @@ def test_get_distance_units(frame, result):
     ({'gui_settings': {'gui_temperature_units': 'F'}}, 'F')
 ])
 def test_get_temperature_units(frame, result):
-    value = extractors.get_temperature_units(frame)
+    value = adapters.get_temperature_units(frame)
     assert value == result
 
 
@@ -41,7 +41,7 @@ def test_get_temperature_units(frame, result):
     ({'charge_state': {'charging_state': None}}, False)
 ])
 def test_is_charging(frame, result):
-    value = extractors.is_charging(frame)
+    value = adapters.is_charging(frame)
     assert value == result
 
 
@@ -51,7 +51,7 @@ def test_is_charging(frame, result):
     ({'charge_state': {'fast_charger_present': None}}, False)
 ])
 def test_fast_charger_present(frame, result):
-    value = extractors.fast_charger_present(frame)
+    value = adapters.fast_charger_present(frame)
     assert value == result
 
 
@@ -82,7 +82,7 @@ def test_fast_charger_present(frame, result):
         'charger_phases': 1 }}, None)
 ])
 def test_get_charger_phases(frame, result):
-    value = extractors.get_charger_phases(frame)
+    value = adapters.get_charger_phases(frame)
     assert value == result
 
 
@@ -98,7 +98,7 @@ def test_get_charger_phases(frame, result):
         'charge_rate': 16}}, None)
 ])
 def test_get_charge_current(frame, result):
-    value = extractors.get_charge_current(frame)
+    value = adapters.get_charge_current(frame)
     assert value == result
 
 
@@ -135,7 +135,7 @@ def test_get_charge_current(frame, result):
       'drive_state': { 'power': None }}, None)
 ])
 def test_get_charge_power(frame, result):
-    value = extractors.get_charge_power(frame)
+    value = adapters.get_charge_power(frame)
     assert value == result
 
 
@@ -178,5 +178,5 @@ def test_get_charge_power(frame, result):
       'drive_state': { 'power': -100 }}, 500)
 ])
 def test_get_charge_tension(frame, result):
-    value = extractors.get_charge_tension(frame)
+    value = adapters.get_charge_tension(frame)
     assert value == result

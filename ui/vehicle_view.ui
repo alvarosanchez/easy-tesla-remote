@@ -64,10 +64,7 @@
                    <string notr="true">display_name</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -93,10 +90,7 @@
                    <string notr="true">vehicle_config.car_type</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -122,10 +116,7 @@
                    <string notr="true">vin</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -151,10 +142,7 @@
                    <string notr="true">vehicle_state.car_version</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -180,10 +168,16 @@
                    <string notr="true">vehicle_state.odometer</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_distance</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">distance_units</string>
+                  </property>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">distance_conversion</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
                   </property>
                  </widget>
                 </item>
@@ -218,10 +212,7 @@
                    <string notr="true">vehicle_config.exterior_color</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -247,10 +238,7 @@
                    <string notr="true">vehicle_config.wheel_type</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -276,10 +264,7 @@
                    <string notr="true">vehicle_config.charge_port_type</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -305,10 +290,7 @@
                    <string notr="true">vehicle_config.rhd</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -334,10 +316,7 @@
                    <string notr="true">vehicle_config.eu_vehicle</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -363,10 +342,7 @@
                    <string notr="true">vehicle_config.has_air_suspension</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -392,10 +368,7 @@
                    <string notr="true">vehicle_config.has_ludicrous_mode</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -421,10 +394,7 @@
                    <string notr="true">vehicle_config.roof_color</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -450,10 +420,7 @@
                    <string notr="true">vehicle_config.spoiler_type</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -479,10 +446,7 @@
                    <string notr="true">vehicle_config.sun_roof_installed</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -508,10 +472,7 @@
                    <string notr="true">vehicle_state.sentry_mode_available</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -569,10 +530,7 @@
                    <string notr="true">state</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -598,10 +556,7 @@
                    <string notr="true">vehicle_state.locked</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -627,10 +582,16 @@
                    <string notr="true">drive_state.speed</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_speed</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">speed_units</string>
+                  </property>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">distance_conversion</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
                   </property>
                  </widget>
                 </item>
@@ -656,10 +617,7 @@
                    <string notr="true">vehicle_state.sentry_mode</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -679,10 +637,7 @@
                    <string notr="true">vehicle_state.is_user_present</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -702,10 +657,7 @@
                    <string notr="true">vehicle_state.speed_limit_mode.active</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -725,10 +677,16 @@
                    <string notr="true">vehicle_state.speed_limit_mode.current_limit_mph</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_speed</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">speed_units</string>
+                  </property>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">distance_conversion</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
                   </property>
                  </widget>
                 </item>
@@ -741,10 +699,7 @@
                    <string notr="true">vehicle_state.valet_mode</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -771,10 +726,7 @@
                    <string notr="true">charge_state.charge_port_door_open</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -794,10 +746,7 @@
                    <string notr="true">charge_state.charge_port_latch</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -817,10 +766,7 @@
                    <string notr="true">charge_state.charge_port_cold_weather_mode</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -840,10 +786,7 @@
                    <string notr="true">in_service</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -863,10 +806,7 @@
                    <string notr="true">drive_state.shift_state</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -886,10 +826,7 @@
                    <string notr="true">drive_state.power</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_power</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">engine_power</string>
                   </property>
                  </widget>
                 </item>
@@ -926,10 +863,7 @@
                      <string>drive_state.heading</string>
                     </property>
                     <property name="valueAdapter" stdset="0">
-                     <string notr="true">string</string>
-                    </property>
-                    <property name="targetProperty" stdset="0">
-                     <string notr="true">text</string>
+                     <string notr="true">qt_json_attribute</string>
                     </property>
                    </widget>
                   </item>
@@ -949,10 +883,7 @@
                      <string notr="true">drive_state.latitude</string>
                     </property>
                     <property name="valueAdapter" stdset="0">
-                     <string>string</string>
-                    </property>
-                    <property name="targetProperty" stdset="0">
-                     <string>text</string>
+                     <string>qt_json_attribute</string>
                     </property>
                    </widget>
                   </item>
@@ -971,11 +902,8 @@
                     <property name="jsonAttribute" stdset="0">
                      <string notr="true">drive_state.longitude</string>
                     </property>
-                    <property name="targetProperty" stdset="0">
-                     <string notr="true">text</string>
-                    </property>
                     <property name="valueAdapter" stdset="0">
-                     <string notr="true">string</string>
+                     <string notr="true">qt_json_attribute</string>
                     </property>
                    </widget>
                   </item>
@@ -989,14 +917,8 @@
                   <property name="openExternalLinks">
                    <bool>true</bool>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">placeholder</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">location_link</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_location_link</string>
                   </property>
                  </widget>
                 </item>
@@ -1063,7 +985,7 @@
                    <string notr="true">charge_state.battery_level</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">progress_bar</string>
+                   <string notr="true">qt_progress_bar</string>
                   </property>
                   <property name="targetProperty" stdset="0">
                    <string notr="true">value</string>
@@ -1092,10 +1014,16 @@
                    <string notr="true">charge_state.battery_range</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_distance</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">distance_units</string>
+                  </property>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">distance_conversion</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
                   </property>
                  </widget>
                 </item>
@@ -1117,14 +1045,17 @@
                   <property name="text">
                    <string>carMaxRange</string>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">composite</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">max_range</string>
+                   <string notr="true">qt_max_range</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">distance_units</string>
+                  </property>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">distance_conversion</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
                   </property>
                  </widget>
                 </item>
@@ -1150,97 +1081,10 @@
                    <string notr="true">charge_state.charge_limit_soc</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_percentaje</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="11" column="0">
-                 <widget class="QLabel" name="label_23">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Current Drawn:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="11" column="1">
-                 <widget class="QLabel" name="carChargeCurrentDrawn">
-                  <property name="text">
-                   <string>carChargeCurrentDrawnnt</string>
-                  </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charger_actual_current</string>
-                  </property>
-                  <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_current_adjusted</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="14" column="0">
-                 <widget class="QLabel" name="label_25">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Current Max:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="14" column="1">
-                 <widget class="QLabel" name="carChargeCurrentMax">
-                  <property name="text">
-                   <string>carChargeCurrentMax</string>
-                  </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charge_current_request_max</string>
-                  </property>
-                  <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_current_adjusted</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="10" column="0">
-                 <widget class="QLabel" name="label_24">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Phases:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="10" column="1">
-                 <widget class="QLabel" name="carChargePhases">
-                  <property name="text">
-                   <string>carChargePhases</string>
-                  </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charger_phases</string>
-                  </property>
-                  <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_phases</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">%</string>
                   </property>
                  </widget>
                 </item>
@@ -1253,7 +1097,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Voltage:</string>
+                   <string>Tension:</string>
                   </property>
                  </widget>
                 </item>
@@ -1268,8 +1112,8 @@
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">charge_tension</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">V</string>
                   </property>
                  </widget>
                 </item>
@@ -1282,7 +1126,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Power To Battery:</string>
+                   <string>Power:</string>
                   </property>
                  </widget>
                 </item>
@@ -1291,14 +1135,11 @@
                   <property name="text">
                    <string>carChargePowerEffective</string>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charge_rate</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">charge_power</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">kW</string>
                   </property>
                  </widget>
                 </item>
@@ -1324,10 +1165,7 @@
                    <string notr="true">charge_state.charging_state</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
@@ -1349,44 +1187,18 @@
                   <property name="text">
                    <string>carChargeAdded</string>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charge_energy_added</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_energy</string>
+                   <string notr="true">charge_added</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="0">
-                 <widget class="QLabel" name="label_44">
-                  <property name="text">
-                   <string>Power Drawn:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1">
-                 <widget class="QLabel" name="carChargePowerDrawn">
-                  <property name="text">
-                   <string>carChargePowerDrawn</string>
-                  </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charger_actual_current</string>
-                  </property>
-                  <property name="valueAdapter" stdset="0">
-                   <string notr="true">charge_power_drawn</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">kWh</string>
                   </property>
                  </widget>
                 </item>
                 <item row="13" column="0">
                  <widget class="QLabel" name="label_46">
                   <property name="text">
-                   <string>Current to Battery:</string>
+                   <string>Current:</string>
                   </property>
                  </widget>
                 </item>
@@ -1395,14 +1207,11 @@
                   <property name="text">
                    <string>carChargeCurrentEffective</string>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.charge_rate</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">current_to_battery</string>
+                   <string notr="true">charge_current</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">A</string>
                   </property>
                  </widget>
                 </item>
@@ -1418,37 +1227,141 @@
                   <property name="text">
                    <string>carChargeTimeLeft</string>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">charge_state.time_to_full_charge</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_time</string>
+                   <string notr="true">charge_time_left</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">to_string</string>
                   </property>
                  </widget>
                 </item>
-                <item row="8" column="0">
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_8">
+               <property name="title">
+                <string>On Board Charger</string>
+               </property>
+               <layout class="QFormLayout" name="formLayout_17">
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_44">
+                  <property name="text">
+                   <string>Power Drawn:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="carChargePowerDrawn">
+                  <property name="text">
+                   <string>carChargePowerDrawn</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">charge_power_drawn</string>
+                  </property>
+                  <property name="units" stdset="0">
+                   <string notr="true">kW</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
                  <widget class="QLabel" name="label_47">
                   <property name="text">
                    <string>Charge Efficiency:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="8" column="1">
+                <item row="4" column="1">
                  <widget class="QLabel" name="carChargeEfficiency">
                   <property name="text">
                    <string>carChargeEfficiency</string>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">custom</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">charge_efficiency</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">%</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_23">
+                  <property name="minimumSize">
+                   <size>
+                    <width>130</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Current Drawn:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLabel" name="carChargeCurrentDrawn">
+                  <property name="text">
+                   <string>carChargeCurrentDrawn</string>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string notr="true">charge_state.charger_actual_current</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">qt_current</string>
+                  </property>
+                  <property name="units" stdset="0">
+                   <string notr="true">A</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_25">
+                  <property name="minimumSize">
+                   <size>
+                    <width>130</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Max Current Combined:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLabel" name="carChargeCurrentMax">
+                  <property name="text">
+                   <string>carChargeCurrentMax</string>
+                  </property>
+                  <property name="jsonAttribute" stdset="0">
+                   <string notr="true">charge_state.charge_current_request_max</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">qt_current</string>
+                  </property>
+                  <property name="units" stdset="0">
+                   <string notr="true">A</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_24">
+                  <property name="minimumSize">
+                   <size>
+                    <width>130</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Phases:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="carChargePhases">
+                  <property name="text">
+                   <string>carChargePhases</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">charge_phases</string>
                   </property>
                  </widget>
                 </item>
@@ -1489,10 +1402,10 @@
                    <string>climate_state.inside_temp</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_temperature</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">temperature_units</string>
                   </property>
                  </widget>
                 </item>
@@ -1518,10 +1431,10 @@
                    <string notr="true">climate_state.outside_temp</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string_temperature</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                  <property name="units" stdset="0">
+                   <string notr="true">temperature_units</string>
                   </property>
                  </widget>
                 </item>
@@ -1547,10 +1460,7 @@
                    <string notr="true">climate_state.is_climate_on</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
-                   <string notr="true">string</string>
-                  </property>
-                  <property name="targetProperty" stdset="0">
-                   <string notr="true">text</string>
+                   <string notr="true">qt_json_attribute</string>
                   </property>
                  </widget>
                 </item>
