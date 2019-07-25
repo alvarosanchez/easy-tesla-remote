@@ -9,9 +9,9 @@ def get_dictionary_value(dictionary, key):
 
     Supports composite keys formed by multiple keys separated by dots (a.b.c)
     
-    :param dictionary: root dictionary
-    :param key: key or composite key
-    :return: value under the key or None if the key is not found
+    :param dictionary: root dictionary.
+    :param key: key or composite key.
+    :return: value under the key or None if the key is not found.
     """
     names = key.split('.', 1)
 

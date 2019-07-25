@@ -1106,9 +1106,6 @@
                   <property name="text">
                    <string>carChargeVoltage</string>
                   </property>
-                  <property name="jsonAttribute" stdset="0">
-                   <string notr="true">none</string>
-                  </property>
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">charge_tension</string>
                   </property>
@@ -1262,6 +1259,9 @@
                   <property name="units" stdset="0">
                    <string notr="true">kW</string>
                   </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
+                  </property>
                  </widget>
                 </item>
                 <item row="4" column="0">
@@ -1281,6 +1281,9 @@
                   </property>
                   <property name="units" stdset="0">
                    <string notr="true">%</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
                   </property>
                  </widget>
                 </item>
