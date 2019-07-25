@@ -232,9 +232,6 @@ def get_charge_tension(frame, **kwargs):
         return None
 
 
-#--------------------------------------
-
-
 @AdapterTracker.adapter('charge_efficiency')
 def get_charge_efficiency(frame, **kwargs):
     """

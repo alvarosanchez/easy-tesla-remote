@@ -4,6 +4,8 @@ Tests for etr.engine.util.adapters
 import pytest
 import etr.engine.util.adapters as adapters
 
+from datetime import timedelta
+
 
 @pytest.mark.parametrize('frame,result', [
     ({'gui_settings': {'gui_distance_units': 'km/hr'}}, 'km/hr'),
@@ -179,4 +181,96 @@ def test_get_charge_power(frame, result):
 ])
 def test_get_charge_tension(frame, result):
     value = adapters.get_charge_tension(frame)
+    assert value == result
+
+
+@pytest.mark.parametrize('frame,result', [
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'fast_charger_present': True}}, None),
+    ({'charge_state': {
+        'charging_state': 'Stopped',
+        'fast_charger_present': False}}, None),
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'fast_charger_present': False,
+        'charger_actual_current': 16,
+        'charge_rate': 16,
+        'charger_phases': 1 }}, 100),
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'fast_charger_present': False,
+        'charger_actual_current': 16,
+        'charge_rate': 48,
+        'charger_phases': 3 }}, 100)
+])
+def test_get_charge_efficiency(frame, result):
+    value = adapters.get_charge_efficiency(frame)
+    assert value == result
+
+
+@pytest.mark.parametrize('frame,result', [
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'fast_charger_present': True}}, None),
+    ({'charge_state': {
+        'charging_state': 'Stopped',
+        'fast_charger_present': False}}, None),
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'fast_charger_present': False,
+        'charger_actual_current': 16,
+        'charge_rate': 16,
+        'charger_voltage': 240,
+        'charger_phases': 1 }}, 3.84),
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'fast_charger_present': False,
+        'charger_actual_current': 16,
+        'charge_rate': 16,
+        'charger_voltage': 240,
+        'charger_phases': 3 }}, 11.52)
+])
+def test_get_charge_power_drawn(frame, result):
+    value = adapters.get_charge_power_drawn(frame)
+    assert value == result
+
+
+@pytest.mark.parametrize('frame,result', [
+    ({'charge_state': {
+        'charging_state': 'Stopped'}}, None),
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'time_to_full_charge': 1}}, timedelta(hours=1)),
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'time_to_full_charge': 0.6}}, timedelta(minutes=36))
+])
+def test_get_charge_time_left(frame, result):
+    value = adapters.get_charge_time_left(frame)
+    assert value == result
+
+
+@pytest.mark.parametrize('frame,result', [
+    ({'charge_state': {
+        'charging_state': 'Stopped'}}, None),
+    ({'charge_state': {
+        'charging_state': 'Charging',
+        'charge_energy_added': 0.1}}, 0.1)
+])
+def test_get_charge_added(frame, result):
+    value = adapters.get_charge_added(frame)
+    assert value == result
+
+
+@pytest.mark.parametrize('frame,result', [
+    ({'charge_state': {
+        'charging_state': 'Charging'}}, None),
+    ({'charge_state': {
+        'charging_state': 'Disconnected'},
+      'drive_state': {
+          'power': 11}}, 11)
+])
+def test_get_engine_power(frame, result):
+    value = adapters.get_engine_power(frame)
     assert value == result
