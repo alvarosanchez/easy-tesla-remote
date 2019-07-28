@@ -51,10 +51,7 @@ class AdapterTracker:
         Returns:
             function. Function indexed to that name or None if the name hasn't been registered.
         """
-        if name in cls.available_adapters:
-            return cls.available_adapters[name]
-        else:
-            return None
+        return cls.available_adapters.get(name)
 
 
 @AdapterTracker.adapter('speed_units')
@@ -84,7 +81,7 @@ def get_distance_units(frame, **kwargs):
     """
     unit = get_speed_units(frame)
 
-    if unit != None and unit == 'km/hr':
+    if unit is not None and unit == 'km/hr':
         return 'km'
     else:
         return 'mi'
@@ -147,7 +144,7 @@ def get_charger_phases(frame, **kwargs):
         charger is not beign used.
     """
     phases = get_dictionary_value(frame, 'charge_state.charger_phases')
-    if is_charging(frame) and not fast_charger_present(frame) and phases != None:
+    if is_charging(frame) and not fast_charger_present(frame) and phases is not None:
         if phases == 1:
             return 1
         else:
@@ -187,19 +184,14 @@ def get_charge_power(frame, **kwargs):
     if is_charging(frame):
         if fast_charger_present(frame):
             power = get_dictionary_value(frame, 'drive_state.power')
-            if power != None:
+            if power is not None:
                 return round(abs(power), 2)
-            else:
-                return None
         else:
             current = get_charge_current(frame)
             tension = get_dictionary_value(frame, 'charge_state.charger_voltage')
-            if current != None and tension != None:
+            if current is not None and tension is not None:
                 return round(current * tension / 1000, 2)
-            else:
-                return None
-    else:
-        return None
+    return None
 
 
 @AdapterTracker.adapter('charge_tension')
@@ -218,18 +210,15 @@ def get_charge_tension(frame, **kwargs):
             power = get_dictionary_value(frame, 'drive_state.power')
             current = get_charge_current(frame)
 
-            if power != None and current != None:
+            if power is not None and current is not None:
                 power = abs(power)
                 return round((power * 1000) / current, 2)
-            else:
-                return None
 
         else:
             tension = get_dictionary_value(frame, 'charge_state.charger_voltage')
-            return tension if tension != None and tension > 2 else None
-
-    else: 
-        return None
+            if tension is not None and tension > 2:
+                return tension
+    return None
 
 
 @AdapterTracker.adapter('charge_efficiency')
@@ -248,7 +237,7 @@ def get_charge_efficiency(frame, **kwargs):
         effective_current = get_charge_current(frame)
         drawn_current = get_dictionary_value(frame, 'charge_state.charger_actual_current')
 
-        if phases != None and drawn_current != None and effective_current != None:
+        if phases is not None and drawn_current is not None and effective_current is not None:
             return (effective_current * 100) / (drawn_current * phases)
 
     return None
@@ -270,7 +259,7 @@ def get_charge_power_drawn(frame, **kwargs):
         drawn_current = get_dictionary_value(frame, 'charge_state.charger_actual_current')
         phases = get_charger_phases(frame)
 
-        if tension != None and phases != None and drawn_current != None:
+        if tension is not None and phases is not None and drawn_current is not None:
             return (drawn_current * tension / 1000) * phases
 
     return None
@@ -290,7 +279,7 @@ def get_charge_time_left(frame, **kwargs):
     if is_charging(frame):
         time_left = get_dictionary_value(frame, 'charge_state.time_to_full_charge')
 
-        if time_left != None:
+        if time_left is not None:
             return timedelta(minutes=int(time_left * 60))
 
     return None

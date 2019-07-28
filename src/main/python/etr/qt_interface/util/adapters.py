@@ -25,7 +25,7 @@ def execute_adapter(adapter_name, frame, qwidget):
         qwidget (QWidget): QT widget that will be updated with the result.
     """
     adapter = AdapterTracker.resolve_adapter(adapter_name)
-    if adapter != None:
+    if adapter is not None:
         try:
             attribute = qwidget.property('jsonAttribute')
             units = qwidget.property('units')
@@ -34,22 +34,22 @@ def execute_adapter(adapter_name, frame, qwidget):
 
             result = adapter(frame, json_attribute=attribute, widget=qwidget)
 
-            if conversion != None:
+            if conversion is not None:
                 converter = AdapterTracker.resolve_adapter(conversion)
-                if converter != None:
+                if converter is not None:
                     result = converter(frame, **{'input': result})
 
-            if round_to != None and result != None:
+            if round_to is not None and result is not None:
                 result = round(result, round_to)
 
-            if units != None and result != None:
+            if units is not None and result is not None:
                 unit_generator = AdapterTracker.resolve_adapter(units)
-                if unit_generator != None:
+                if unit_generator is not None:
                     units = unit_generator(frame)
                 result = f'{result} {units}'
 
             target_property = qwidget.property('targetProperty')                
-            if target_property == None:
+            if target_property is None:
                 target_property = 'text'
             qwidget.setProperty(target_property, result)
         except Exception as error:
@@ -73,12 +73,12 @@ def progress_bar(frame, **kwargs):
         int. The value of the dict key or 0 if the key doesn't exist or is None.
     """
     value = get_dictionary_value(frame, kwargs['json_attribute'])
-    if kwargs['widget'] != None:
-        if value != None:
+    if kwargs['widget'] is not None:
+        if value is not None:
             kwargs['widget'].setVisible(True)
         else:
             kwargs['widget'].setVisible(False)
-    return value if value != None else 0
+    return value if value is not None else 0
 
 
 @AdapterTracker.adapter('qt_max_range')
@@ -98,7 +98,7 @@ def string_estimated_max_range(frame, **kwargs):
 
     value = None
 
-    if current_level != None and current_range != None:
+    if current_level is not None and current_range is not None:
         value = current_range * 100 / current_level
 
     return value
@@ -138,7 +138,7 @@ def current(frame, **kwargs):
     """
     value = get_dictionary_value(frame, kwargs['json_attribute'])
     phases = extractors.get_charger_phases(frame)
-    return value * phases if value != None and phases != None else None
+    return value * phases if value is not None and phases is not None else None
 
 
 @AdapterTracker.adapter('qt_location_link')
