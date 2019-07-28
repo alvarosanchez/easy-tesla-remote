@@ -4,6 +4,7 @@ Unit conversion functions and adapters.
 from .adapters import (
     AdapterTracker,
     get_distance_units,
+    get_temperature_units,
 )
 
 
@@ -17,7 +18,7 @@ def miles_to_km(value):
     Returns:
         float. Value converted to kilometers
     """
-    if value == None:
+    if value is None:
         return None
     return value * 1.60934
 
@@ -32,9 +33,24 @@ def km_to_miles(value):
     Returns:
         float. Value converted to miles
     """
-    if value == None:
+    if value is None:
         return None
     return value / 1.60934
+
+
+def celsius_to_fahrenheit(value):
+    """
+    Convert celsius to fahrenheit
+
+    Args:
+        value (float): celsius value
+
+    Returns:
+        float. Value converted to fahrenheit
+    """
+    if value is None:
+        return None
+    return (value * 1.8) + 32
 
 
 @AdapterTracker.adapter('distance_conversion')
@@ -77,3 +93,25 @@ def string_conversion(frame, **kwargs):
         return str(kwargs['input'])
     else:
         return None
+
+
+@AdapterTracker.adapter('temperature_conversion')
+def convert_temperature(frame, **kwargs):
+    """
+    Convert temperature if the frame requires it.
+
+    Args:
+        frame (dict): frame to adapt.
+
+    Kwargs:
+        input (float): value to convert.
+
+    Returns:
+        float. Converted input value.
+    """
+    units = get_temperature_units(frame)
+
+    if units == 'F':
+        return celsius_to_fahrenheit(kwargs['input'])
+    else:
+        return kwargs['input']

@@ -29,6 +29,17 @@ def test_km_to_miles(value, result):
     assert x == result
 
 
+@pytest.mark.parametrize('value,result', [
+    (1, 33.8),
+    (-1, 30.2),
+    (0, 32),
+    (None, None)
+])
+def test_celsius_to_fahrenheit(value, result):
+    x = conversions.celsius_to_fahrenheit(value)
+    assert x == result
+
+
 @pytest.mark.parametrize('frame,value,result', [
     ({'gui_settings': {'gui_distance_units': 'km/hr'}}, 1, 1.60934),
     ({'gui_settings': {'gui_distance_units': 'mi/hr'}}, 1, 1)
@@ -45,4 +56,13 @@ def test_convert_distance(frame, value, result):
 ])
 def test_convert_distance(value, result):
     x = conversions.string_conversion({}, **{'input': value})
+    assert x == result
+
+
+@pytest.mark.parametrize('frame,value,result', [
+    ({'gui_settings': {'gui_temperature_units': 'C'}}, 1, 1),
+    ({'gui_settings': {'gui_temperature_units': 'F'}}, 1, 33.8)
+])
+def test_convert_temperature(frame, value, result):
+    x = conversions.convert_temperature(frame, **{'input': value})
     assert x == result

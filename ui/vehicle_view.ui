@@ -1402,13 +1402,19 @@
                    <string>carCabinTemp</string>
                   </property>
                   <property name="jsonAttribute" stdset="0">
-                   <string>climate_state.inside_temp</string>
+                   <string notr="true">climate_state.inside_temp</string>
                   </property>
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">qt_json_attribute</string>
                   </property>
                   <property name="units" stdset="0">
                    <string notr="true">temperature_units</string>
+                  </property>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">temperature_conversion</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>1</number>
                   </property>
                  </widget>
                 </item>
@@ -1438,6 +1444,12 @@
                   </property>
                   <property name="units" stdset="0">
                    <string notr="true">temperature_units</string>
+                  </property>
+                  <property name="conversion" stdset="0">
+                   <string notr="true">temperature_conversion</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>1</number>
                   </property>
                  </widget>
                 </item>
