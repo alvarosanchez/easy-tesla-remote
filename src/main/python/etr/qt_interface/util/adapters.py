@@ -5,7 +5,11 @@ import logging
 import etr.engine.util.adapters as extractors
 import etr.engine.util.conversions
 
-from etr.engine.util.adapters import AdapterTracker
+from etr.engine.util.adapters import (
+    AdapterTracker,
+    is_charging,
+    fast_charger_present,
+)
 from etr.engine.util.dictionaries import get_dictionary_value
 
 
@@ -136,9 +140,9 @@ def current(frame, **kwargs):
         float. Charge current value adjusted by charger phases or None if it can't be generated
         using the frame data.
     """
-    value = get_dictionary_value(frame, kwargs['json_attribute'])
-    phases = extractors.get_charger_phases(frame)
-    return value * phases if value is not None and phases is not None else None
+    if is_charging(frame) and not fast_charger_present(frame):
+        return get_dictionary_value(frame, kwargs['json_attribute'])
+    return None
 
 
 @AdapterTracker.adapter('qt_location_link')

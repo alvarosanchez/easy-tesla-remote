@@ -1088,32 +1088,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="9" column="0">
-                 <widget class="QLabel" name="label_26">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Tension:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="9" column="1">
-                 <widget class="QLabel" name="carChargeVoltage">
-                  <property name="text">
-                   <string>carChargeVoltage</string>
-                  </property>
-                  <property name="valueAdapter" stdset="0">
-                   <string notr="true">charge_tension</string>
-                  </property>
-                  <property name="units" stdset="0">
-                   <string notr="true">V</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="7" column="0">
                  <widget class="QLabel" name="label_14">
                   <property name="minimumSize">
@@ -1123,7 +1097,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Power:</string>
+                   <string>Power To Battery:</string>
                   </property>
                  </widget>
                 </item>
@@ -1195,7 +1169,7 @@
                 <item row="13" column="0">
                  <widget class="QLabel" name="label_46">
                   <property name="text">
-                   <string>Current:</string>
+                   <string>Current To Battery:</string>
                   </property>
                  </widget>
                 </item>
@@ -1241,14 +1215,14 @@
                 <string>On Board Charger</string>
                </property>
                <layout class="QFormLayout" name="formLayout_17">
-                <item row="1" column="0">
+                <item row="2" column="0">
                  <widget class="QLabel" name="label_44">
                   <property name="text">
                    <string>Power Drawn:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
+                <item row="2" column="1">
                  <widget class="QLabel" name="carChargePowerDrawn">
                   <property name="text">
                    <string>carChargePowerDrawn</string>
@@ -1264,14 +1238,14 @@
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="0">
+                <item row="5" column="0">
                  <widget class="QLabel" name="label_47">
                   <property name="text">
                    <string>Charge Efficiency:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="1">
+                <item row="5" column="1">
                  <widget class="QLabel" name="carChargeEfficiency">
                   <property name="text">
                    <string>carChargeEfficiency</string>
@@ -1287,7 +1261,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
+                <item row="3" column="0">
                  <widget class="QLabel" name="label_23">
                   <property name="minimumSize">
                    <size>
@@ -1300,7 +1274,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
+                <item row="3" column="1">
                  <widget class="QLabel" name="carChargeCurrentDrawn">
                   <property name="text">
                    <string>carChargeCurrentDrawn</string>
@@ -1316,7 +1290,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="0">
+                <item row="4" column="0">
                  <widget class="QLabel" name="label_25">
                   <property name="minimumSize">
                    <size>
@@ -1325,11 +1299,11 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Max Current Combined:</string>
+                   <string>Max Current:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="1">
+                <item row="4" column="1">
                  <widget class="QLabel" name="carChargeCurrentMax">
                   <property name="text">
                    <string>carChargeCurrentMax</string>
@@ -1365,6 +1339,35 @@
                   </property>
                   <property name="valueAdapter" stdset="0">
                    <string notr="true">charge_phases</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_26">
+                  <property name="minimumSize">
+                   <size>
+                    <width>130</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Tension:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="carChargeVoltage">
+                  <property name="text">
+                   <string>carChargeVoltage</string>
+                  </property>
+                  <property name="valueAdapter" stdset="0">
+                   <string notr="true">charge_tension</string>
+                  </property>
+                  <property name="units" stdset="0">
+                   <string notr="true">V</string>
+                  </property>
+                  <property name="round" stdset="0">
+                   <number>2</number>
                   </property>
                  </widget>
                 </item>

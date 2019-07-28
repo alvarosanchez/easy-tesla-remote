@@ -2,6 +2,7 @@
 Frame adapters and tracker class.
 """
 from datetime import timedelta
+from math import sqrt
 from .dictionaries import get_dictionary_value
 
 
@@ -205,19 +206,13 @@ def get_charge_tension(frame, **kwargs):
     Returns:
         float. Car's charge tension or None if the car is not charging.
     """
-    if is_charging(frame):
-        if fast_charger_present(frame):
-            power = get_dictionary_value(frame, 'drive_state.power')
-            current = get_charge_current(frame)
-
-            if power is not None and current is not None:
-                power = abs(power)
-                return round((power * 1000) / current, 2)
-
-        else:
-            tension = get_dictionary_value(frame, 'charge_state.charger_voltage')
-            if tension is not None and tension > 2:
-                return tension
+    if is_charging(frame) and not fast_charger_present(frame):
+        tension = get_dictionary_value(frame, 'charge_state.charger_voltage')
+        phases = get_charger_phases(frame)
+        if phases is None:
+            phases = 1
+        if tension is not None and tension > 2:
+            return tension * sqrt(phases)
     return None
 
 
@@ -260,7 +255,7 @@ def get_charge_power_drawn(frame, **kwargs):
         phases = get_charger_phases(frame)
 
         if tension is not None and phases is not None and drawn_current is not None:
-            return (drawn_current * tension / 1000) * phases
+            return (drawn_current * tension / 1000) * sqrt(phases)
 
     return None
 

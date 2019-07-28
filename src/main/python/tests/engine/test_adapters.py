@@ -177,7 +177,7 @@ def test_get_charge_power(frame, result):
         'fast_charger_present': True,
         'charge_rate': 200,
         'charger_voltage': 240},
-      'drive_state': { 'power': -100 }}, 500)
+      'drive_state': { 'power': -100 }}, None)
 ])
 def test_get_charge_tension(frame, result):
     value = adapters.get_charge_tension(frame)
@@ -229,7 +229,7 @@ def test_get_charge_efficiency(frame, result):
         'charger_actual_current': 16,
         'charge_rate': 16,
         'charger_voltage': 240,
-        'charger_phases': 3 }}, 11.52)
+        'charger_phases': 3 }}, 11.519999999999998)
 ])
 def test_get_charge_power_drawn(frame, result):
     value = adapters.get_charge_power_drawn(frame)
