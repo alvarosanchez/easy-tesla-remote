@@ -1,314 +1,161 @@
-from datetime import timedelta
+"""
+Custom frame adapters for QT and helper functions.
+"""
+import logging
+import etr.engine.util.adapters as extractors
+import etr.engine.util.conversions
 
-from .dictionaries import get_dictionary_value
+from etr.engine.util.adapters import (
+    AdapterTracker,
+    is_charging,
+    fast_charger_present,
+)
+from etr.engine.util.dictionaries import get_dictionary_value
 
 
-class AdapterTracker:
+logger = logging.getLogger(__name__)
 
-    available_adapters = {}
 
-    @classmethod
-    def adapter(cls, name):
-        def decorator(f):
-            cls.available_adapters[name] = f
-            return f
-        return decorator
+def execute_adapter(adapter_name, frame, qwidget):
+    """
+    Execute the adapter for a frame and apply the result to a QT widget.
 
-    @classmethod
-    def resolve_adapter(cls, name):
-        if name in cls.available_adapters:
-            return cls.available_adapters[name]
+    All the exceptions raised from the adapters will be handled and
+    logged by the function.
+
+    Args:
+        adapter_name (str): name of the adapter that will be executed.
+        frame (dict): frame to adapt.
+        qwidget (QWidget): QT widget that will be updated with the result.
+    """
+    adapter = AdapterTracker.resolve_adapter(adapter_name)
+    if adapter is not None:
+        try:
+            attribute = qwidget.property('jsonAttribute')
+            units = qwidget.property('units')
+            conversion = qwidget.property('conversion')
+            round_to = qwidget.property('round')
+
+            result = adapter(frame, json_attribute=attribute, widget=qwidget)
+
+            if conversion is not None:
+                converter = AdapterTracker.resolve_adapter(conversion)
+                if converter is not None:
+                    result = converter(frame, **{'input': result})
+
+            if round_to is not None and result is not None:
+                result = round(result, round_to)
+
+            if units is not None and result is not None:
+                unit_generator = AdapterTracker.resolve_adapter(units)
+                if unit_generator is not None:
+                    units = unit_generator(frame)
+                result = f'{result} {units}'
+
+            target_property = qwidget.property('targetProperty')                
+            if target_property is None:
+                target_property = 'text'
+            qwidget.setProperty(target_property, result)
+        except Exception as error:
+            logger.error(error)
+
+
+@AdapterTracker.adapter('qt_progress_bar')
+def progress_bar(frame, **kwargs):
+    """
+    Adapt a frame key into a QT progress bar.
+
+    Args:
+        frame (dict): frame to adapt.
+
+    Kwargs:
+        json_attribute (string): Name of the dict key that has to be adapted in an a.b.c format.
+        widget (optional)(QWidget): Target widget. It will be hidden if the dict attribute
+        doesn't exist or is None.
+
+    Returns:
+        int. The value of the dict key or 0 if the key doesn't exist or is None.
+    """
+    value = get_dictionary_value(frame, kwargs['json_attribute'])
+    if kwargs['widget'] is not None:
+        if value is not None:
+            kwargs['widget'].setVisible(True)
         else:
-            return None
-
-    @classmethod
-    def execute_adapter(cls, adapter_name, frame, key, qwidget=None, widget_property='text'):
-        adapter = cls.resolve_adapter(adapter_name)
-        if adapter != None:
-            return adapter(frame, key, qwidget, widget_property)
-        else:
-            return None
+            kwargs['widget'].setVisible(False)
+    return value if value is not None else 0
 
 
-@AdapterTracker.adapter('string')
-def string(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    result = str(value) if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
+@AdapterTracker.adapter('qt_max_range')
+def string_estimated_max_range(frame, **kwargs):
+    """
+    Estimate car's max range.
 
+    Args:
+        frame (dict): frame to adapt.
 
-@AdapterTracker.adapter('string_temperature')
-def string_temperature(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    temp_unit = get_dictionary_value(frame, 'gui_settings.gui_temperature_units')
-    if temp_unit == None:
-        temp_unit = ''
-    result = f'{value} {temp_unit}' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_distance')
-def string_distance(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    distance_unit = get_dictionary_value(frame, 'gui_settings.gui_distance_units')
-
-    if value != None and distance_unit == 'km/hr':
-        value = value * 1.60934
-        distance_unit = 'km'
-    else:
-        distance_unit = 'mi'
-
-    result = f'{round(value, 2)} {distance_unit}' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_speed')
-def string_speed(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    distance_unit = get_dictionary_value(frame, 'gui_settings.gui_distance_units')
-
-    if value != None and distance_unit == 'km/hr':
-        value = value * 1.60934
-
-    result = f'{round(value, 2)} {distance_unit}' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_power')
-def string_power(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-
-    result = f'{value} kW' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_energy')
-def string_energy(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    result = f'{value} kWh' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_current')
-def string_current(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    result = f'{value} A' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_phases')
-def string_current(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-
-    result = ''
-
-    if value != None:
-        if value != 1:
-            result = '3'
-        else:
-            result = '1'
-
-
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_current_adjusted')
-def string_current(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    phases = get_dictionary_value(frame, 'charge_state.charger_phases')
-
-    result = ''
-
-    if phases != None:
-        if phases != 1:
-            phases = 3
-        
-        result = f'{value * phases} A' if value != None else ''
-
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_tension')
-def string_tension(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    result = f'{value} V' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('string_percentaje')
-def string_percentaje(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    result = f'{value} %' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('progress_bar')
-def progress_bar(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    if qwidget != None:
-        if value != None:
-            qwidget.setProperty(widget_property, value)
-            qwidget.setVisible(True)
-        else:
-            qwidget.setVisible(False)
-    return value
-
-
-@AdapterTracker.adapter('max_range')
-def string_estimated_max_range(frame, key, qwidget, widget_property):
+    Returns:
+        float. Estimated max range for the car or None if it can't be generated
+        using the frame data.
+    """
     current_level = get_dictionary_value(frame, 'charge_state.battery_level')
     current_range = get_dictionary_value(frame, 'charge_state.battery_range')
-    distance_unit = get_dictionary_value(frame, 'gui_settings.gui_distance_units')
 
     value = None
 
-    if current_level != None and current_range != None:
+    if current_level is not None and current_range is not None:
         value = current_range * 100 / current_level
 
-    if value != None and distance_unit == 'km/hr':
-        value = value * 1.60934
-        distance_unit = 'km'
-    else:
-        distance_unit = 'mi'
-
-    result = f'{round(value, 2)} {distance_unit}' if value != None else ''
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('charge_power')
-def string_charge_power(frame, key, qwidget, widget_property):
-    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
-
-    value = None
-
-    if fast:
-        power = get_dictionary_value(frame, 'drive_state.power')
-        if power != None:
-            power = abs(power)
-            value = f'{round(power, 2)} kW'
-
-    else:
-        current = get_dictionary_value(frame, 'charge_state.charge_rate')
-        voltage = get_dictionary_value(frame, 'charge_state.charger_voltage')
-        if current != None and voltage != None:
-            value = current * voltage / 1000
-            value = f'{round(value, 2)} kW'
-
-    if qwidget != None:
-        qwidget.setProperty(widget_property, value)
     return value
 
 
-@AdapterTracker.adapter('charge_power_drawn')
-def string_charge_power_drawn(frame, key, qwidget, widget_property):
-    current = get_dictionary_value(frame, key)
-    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
+@AdapterTracker.adapter('qt_json_attribute')
+def json_attribute(frame, **kwargs):
+    """
+    Read a key from a frame.
 
-    value = None
+    Args:
+        frame (dict): frame to adapt.
 
-    if not fast:
-        voltage = get_dictionary_value(frame, 'charge_state.charger_voltage')
-        phases = get_dictionary_value(frame, 'charge_state.charger_phases')
+    Kwargs:
+        json_attribute (string): Name of the dict key that has to be read. In an a.b.c format.
 
-        if current != None and voltage != None:
-            value = current * voltage / 1000
-            if phases != 1:
-                value = value * 3
-            value = f'{round(value, 2)} kW'
-
-    if qwidget != None:
-        qwidget.setProperty(widget_property, value)
-    return value
+    Returns:
+        The value of the dict key or None if it doesn't exist.
+    """
+    return get_dictionary_value(frame, kwargs['json_attribute'])
 
 
-@AdapterTracker.adapter('string_time')
-def string_time(frame, key, qwidget, widget_property):
-    value = get_dictionary_value(frame, key)
-    result = None
+@AdapterTracker.adapter('qt_current')
+def current(frame, **kwargs):
+    """
+    Get the charge current value from a frame.
 
-    if value != None:
-        delta = timedelta(minutes=int(value * 60))
-        result = str(delta)
-    
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
+    Args:
+        frame (dict): frame to adapt.
 
+    Kwargs:
+        json_attribute (string): Name of the dict key that contains the value. In an a.b.c format.
 
-@AdapterTracker.adapter('charge_efficiency')
-def charge_efficiency(frame, key, qwidget, widget_property):
-    total_current = get_dictionary_value(frame, 'charge_state.charger_actual_current')
-    phases = get_dictionary_value(frame, 'charge_state.charger_phases')
-    rate = get_dictionary_value(frame, 'charge_state.charge_rate')
-
-    result = ''
-
-    if total_current != None and rate != None and phases != None and total_current != 0:
-        if phases != 1:
-            phases = 3
-        result = f'{round(rate * 100 / (total_current * phases), 2)} %'
-
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
+    Returns:
+        float. Charge current value adjusted by charger phases or None if it can't be generated
+        using the frame data.
+    """
+    if is_charging(frame) and not fast_charger_present(frame):
+        return get_dictionary_value(frame, kwargs['json_attribute'])
+    return None
 
 
-@AdapterTracker.adapter('location_link')
-def location_link(frame, key, qwidget, widget_property):
+@AdapterTracker.adapter('qt_location_link')
+def location_link(frame, **kwargs):
+    """
+    Build an HTML Google Maps link using the car position.
+
+    Args:
+        frame (dict): frame to adapt.
+
+    Returns:
+        string. HTML link to the car's position in Google Maps.
+    """
     latitude = get_dictionary_value(frame, 'drive_state.latitude')
-    longitude = get_dictionary_value(frame, 'drive_state.longitude')
-    
-    result = f'<a href="http://maps.google.es/?q={latitude},{longitude}">View on map</a>'
-    
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
-
-
-@AdapterTracker.adapter('charge_tension')
-def charge_tension(frame, key, qwidget, widget_property):
-    fast = get_dictionary_value(frame, 'charge_state.fast_charger_present')
-
-    result = None
-
-    if fast:
-        power = get_dictionary_value(frame, 'drive_state.power')
-        current = get_dictionary_value(frame, 'charge_state.charge_rate')
-
-        power = abs(power)
-
-        if power != None and current != None:
-            tension = round((power * 1000) / current, 2)
-            result = f'{tension} V'
-
-    else:
-        tension = get_dictionary_value(frame, 'charge_state.charger_voltage')
-        result = f'{tension} V' if tension != None and tension > 5 else ''
-
-    if qwidget != None:
-        qwidget.setProperty(widget_property, result)
-    return result
+    longitude = get_dictionary_value(frame, 'drive_state.longitude') 
+    return f'<a href="http://maps.google.es/?q={latitude},{longitude}">View on map</a>'
