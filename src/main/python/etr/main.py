@@ -14,16 +14,18 @@ from file_recorder.replayer import FileReplayer
 
 logger = logging.getLogger(__name__)
 engine = AppEngine(TeslaApi())
+demo_data_path = ''
 
 # Frame recorder
 recorder = FileRecorder(engine)
+
 
 @engine.handles(engine.events.REQUEST_DEMO_API)
 def engine_demo_api():
     logger.debug('Engine requested a demo API')
     recorder.stop_recording()
     time.sleep(0.5)
-    replayer = FileReplayer()
+    replayer = FileReplayer(demo_data_path)
     replayer.prepare_frames()
     engine.poll_rate = 1
     engine.switch_api(TeslaApiReplay(replayer), True)
@@ -48,6 +50,8 @@ if __name__ == '__main__':
 
     # QT UI with FBS context
     appctxt = ApplicationContext()
+    demo_data_path = appctxt.get_resource('demo_data.zip')
+
     main_window = MainWindow(engine)
     main_window.show()
     exit_code = appctxt.app.exec_()

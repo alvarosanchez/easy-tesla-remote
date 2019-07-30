@@ -183,7 +183,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _on_vehicle_honk(self, car_id):
         logger.debug(f'Honking car {car_id}')
         self.pending_commands.append(
-            self.app_engine.send_car_command(self.app_engine.commands.HONK, car_id)
+            self.app_engine.send_car_command(self.app_engine.commands.HONK_HORN, car_id)
         )
 
     def _on_vehicle_flash_lights(self, car_id):

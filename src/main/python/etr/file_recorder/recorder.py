@@ -14,6 +14,10 @@ from threading import (
     Thread,
     Event,
 )
+from zipfile import (
+    ZipFile,
+    ZIP_DEFLATED,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -26,15 +30,17 @@ class FileRecorder:
     The class can be attached to an engine and will record the frames produced into disk
     """
 
-    def __init__(self, engine, destination_path=None, daemon=False):
+    def __init__(self, engine, destination_path=None, anonymize=False, daemon=False):
         """
-        :param engine: engine to record from.
-        :param destination_path: (optional) directory where the resulting files will be stored.
-        If no path is provided the frames are stored in the user's home under etr_recordings.
-        :param daemon: (optional) sets whether a daemon thread will be used by the recorder.
-        Defaults to False.
+        Args:
+            engine (AppEngine): engine to record from.
+            destination_path: (string=None) directory where the resulting files will be stored. If
+            no path is provided the frames are stored in the user's home under etr_recordings.
+            anonymize (bool=False): remove sensitive information from the recorded frame.
+            daemon: (bool=False) sets whether a daemon thread will be used by the recorder.
         """
         self._app_engine = engine
+        self.anonymize = anonymize
 
         if destination_path != None:
             self.destination_path = destination_path
@@ -100,16 +106,25 @@ class FileRecorder:
                 except Full:
                     logger.warning('Queue is full a frame was dropped')
 
+    def _anonymize_frame(self, frame):
+        if self.anonymize:
+            frame['tokens'] = []
+            return frame
+        else:
+            return frame
+
     def _worker_thread(self):
         self._recording_stopped.clear()
         while not self._stop_recording.is_set():
             try:
                 frame = self._frame_queue.get(timeout=0.5)
-                file_name = f'{frame["vin"]}-{datetime.now().timestamp()}.json'
-                file_path = path.join(self.destination_path, file_name)
+                json_name = f'{frame["vin"]}-{datetime.now().timestamp()}.json'
+                zip_name = f'recordings_{datetime.now().date()}.zip'
+                zip_path = path.join(self.destination_path, zip_name)
 
-                with open(file_path, 'w') as recorded_frame:
-                    json.dump(frame, recorded_frame, indent=3)
+                with ZipFile(zip_path, mode='a', compression=ZIP_DEFLATED) as zip_file:
+                    data = json.dumps(self._anonymize_frame(frame), indent=3)
+                    zip_file.writestr(json_name, data)
 
             except Empty:
                 pass
