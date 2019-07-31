@@ -10,10 +10,10 @@ from .adapters import (
 
 def miles_to_km(value):
     """
-    Convert miles to kilometers
+    Convert miles to kilometers.
 
     Args:
-        value (float): miles value
+        - value (float): miles value.
 
     Returns:
         float. Value converted to kilometers
@@ -25,13 +25,13 @@ def miles_to_km(value):
 
 def km_to_miles(value):
     """
-    Convert kilometers to miles
+    Convert kilometers to miles.
 
     Args:
-        value (float): kilometers value
+        - value (float): kilometers value.
 
     Returns:
-        float. Value converted to miles
+        float. Value converted to miles.
     """
     if value is None:
         return None
@@ -40,13 +40,13 @@ def km_to_miles(value):
 
 def celsius_to_fahrenheit(value):
     """
-    Convert celsius to fahrenheit
+    Convert celsius to fahrenheit.
 
     Args:
-        value (float): celsius value
+        - value (float): celsius value.
 
     Returns:
-        float. Value converted to fahrenheit
+        float. Value converted to fahrenheit.
     """
     if value is None:
         return None
@@ -59,10 +59,10 @@ def convert_distance(frame, **kwargs):
     Convert distance if the frame requires it.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Kwargs:
-        input (float): value to convert.
+        - input (float): value to convert.
 
     Returns:
         float. Converted input value.
@@ -81,10 +81,10 @@ def string_conversion(frame, **kwargs):
     Cast input to string.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Kwargs:
-        input: value to cast.
+        - input: value to cast.
 
     Returns:
         string. Casted input value.
@@ -101,10 +101,10 @@ def convert_temperature(frame, **kwargs):
     Convert temperature if the frame requires it.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Kwargs:
-        input (float): value to convert.
+        - input (float): value to convert.
 
     Returns:
         float. Converted input value.

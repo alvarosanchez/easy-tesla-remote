@@ -6,21 +6,24 @@ from threading import (
 
 class ThreadSafeCounter:
     """
-    Thread safe counter to keep track of the number of threads ussing a resource.
+    Thread safe counter to keep track of the number of threads ussing a
+    resource.
 
-    Can be used as context manager or function decorator to ensure that the counter is always
-    updated.
+    Can be used as context manager or function decorator to ensure that
+    the counter is always updated.
 
     Attributes:
-    counter_is_zero: Event that is set when the counter reaches zero. It can be used to sync
-    threads that require that no one is using the resource.
+        - counter_is_zero: Event that is set when the counter reaches zero.
+            It can be used to sync threads that require that no one is using
+            the resource.
     """
 
     def __init__(self, initial_value=0, allow_below_zero=False):
         """
-        :param initial_value: Initial value of the counter. Defaults to zero
-        :param allow_below_zero: Sets wether the counter will go below zero or not. Defaults
-        to False
+        Args:
+            - initial_value (int=0): Initial value of the counter.
+            - allow_below_zero (bool=False): Sets wether the counter will go
+                below zero or not.
         """
         self._value = initial_value
         self._allow_below_zero = allow_below_zero
@@ -30,9 +33,9 @@ class ThreadSafeCounter:
 
     def increment(self):
         """
-        Increment the counter by one
+        Increment the counter by one.
 
-        Thread safe
+        Thread safe.
         """
         with self._lock:
             self._value += 1
@@ -40,9 +43,9 @@ class ThreadSafeCounter:
 
     def decrement(self):
         """
-        Decrement the counter by one
+        Decrement the counter by one.
 
-        Thread safe
+        Thread safe.
         """
         with self._lock:
             self._value -= 1
@@ -58,9 +61,9 @@ class ThreadSafeCounter:
 
     def get_value(self):
         """
-        Get the current value of the counter
+        Get the current value of the counter.
 
-        Thread safe
+        Thread safe.
         """
         with self._lock:
             return self._value
@@ -75,8 +78,8 @@ class ThreadSafeCounter:
 
     def count_access(self, func):
         """
-        Function decorator. Increase the counter on function invocation and decrease it when
-        the function exits
+        Function decorator. Increase the counter on function invocation and
+        decrease it when the function exits.
         """
         def decorator():
             with self:

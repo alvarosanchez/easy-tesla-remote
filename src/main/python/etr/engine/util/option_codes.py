@@ -1,22 +1,27 @@
 """
-Vehicle option codes and their meanings
+Vehicle option codes and their meanings.
 
-The codes were obtained from https://tesla-api.timdorr.com/vehicle/optioncodes
+The codes were obtained from https://tesla-api.timdorr.com/vehicle/optioncodes.
 """
 
 
 def translate_codes(option_codes):
     """
-    Translate a set of option codes into a tupple list
+    Translate a set of option codes into a tupple list.
 
-    :param option_codes: string containing the option codes separated by comma
-    :return: tupple list containing the option codes and their meanings
+    Args:
+        - option_codes (string): string containing the option codes separated
+            by commas.
+    
+    Returns: 
+        tupple list containing the option codes and their meanings.
     """
     code_list = option_codes.split(',')
     result = []
     for code in code_list:
-        if code in CODES:
-            result.append((code, CODES[code]))
+        value = CODES.get(code, None)
+        if value is not None:
+            result.append((code, value))
         else:
             result.append((code, '?'))
     return result

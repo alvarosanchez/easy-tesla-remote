@@ -25,19 +25,23 @@ logger = logging.getLogger(__name__)
 
 class FileRecorder:
     """
-    Record engine frames into json files
+    Record engine frames into json files.
 
-    The class can be attached to an engine and will record the frames produced into disk
+    The class can be attached to an engine and will record the frames produced
+    into disk.
     """
 
     def __init__(self, engine, destination_path=None, anonymize=False, daemon=False):
         """
         Args:
-            engine (AppEngine): engine to record from.
-            destination_path: (string=None) directory where the resulting files will be stored. If
-            no path is provided the frames are stored in the user's home under etr_recordings.
-            anonymize (bool=False): remove sensitive information from the recorded frame.
-            daemon: (bool=False) sets whether a daemon thread will be used by the recorder.
+            - engine (AppEngine): engine to record from.
+            - destination_path (string=None): directory where the resulting
+                files will be stored. If no path is provided the frames are
+                stored in the user's home under etr_recordings.
+            - anonymize (bool=False): remove sensitive information from the
+                recorded frame.
+            - daemon (bool=False): sets whether a daemon thread will be used
+                by the recorder.
         """
         self._app_engine = engine
         self.anonymize = anonymize
@@ -56,7 +60,7 @@ class FileRecorder:
 
     def wire_events(self):
         """
-        Attach the recorder to the engine
+        Attach the recorder to the engine.
         """
         self._app_engine.register_handler(
             self._app_engine.events.NEW_FRAMES_READY,
@@ -65,7 +69,7 @@ class FileRecorder:
 
     def unwire_events(self):
         """
-        Detach the recorder from the engine
+        Detach the recorder from the engine.
         """
         self._app_engine.unregister_handler(
             self._app_engine.events.NEW_FRAMES_READY,
@@ -74,7 +78,7 @@ class FileRecorder:
 
     def start_recording(self):
         """
-        Start to record engine events
+        Start to record engine events.
         """
         if self._recording_stopped.is_set():
             logger.debug('Starting recording')
@@ -86,10 +90,10 @@ class FileRecorder:
 
     def stop_recording(self):
         """
-        Stop recording engine events
+        Stop recording engine events.
 
-        The stop may not be inmediate because the thread that does the actual recording
-        may need a bit of time to stop
+        The stop may not be inmediate because the thread that does the actual
+        recording may need a bit of time to stop.
         """
         logger.debug('Stopping recording')
         self._stop_recording.set()

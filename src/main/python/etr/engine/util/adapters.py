@@ -8,9 +8,11 @@ from .dictionaries import get_dictionary_value
 
 class AdapterTracker:
     """
-    Static class that tracks all the available adapters and indexes them by name.
+    Static class that tracks all the available adapters and indexes them by
+    name.
 
-    To register adapters in other modules import this class and use the decorator.
+    To register adapters in other modules import this class and use the
+    decorator.
     """
 
     available_adapters = {}
@@ -21,7 +23,7 @@ class AdapterTracker:
         Register the decorated function as an adapter.
 
         Args:
-            name (str): Name for the function.
+            - name (str): Name for the function.
         """
         def decorator(f):
             cls.register_adapter(name, f)
@@ -33,11 +35,12 @@ class AdapterTracker:
         """
         Register an adapter function.
 
-        If another function with the same name exits it will be replaced with the new one.
+        If another function with the same name exits it will be replaced with
+        the new one.
 
         Args:
-            name (str): name for the function.
-            function (function): function that will be registered.
+            - name (str): name for the function.
+            - function (function): function that will be registered.
         """
         cls.available_adapters[name] = function
 
@@ -47,12 +50,13 @@ class AdapterTracker:
         Resolve an adapter function.
 
         Args:
-            name (str): name for the function.
+            - name (str): name for the function.
 
         Returns:
-            function. Function indexed to that name or None if the name hasn't been registered.
+            function. Function indexed to that name or None if the name hasn't
+            been registered.
         """
-        return cls.available_adapters.get(name)
+        return cls.available_adapters.get(name, None)
 
 
 @AdapterTracker.adapter('speed_units')
@@ -61,7 +65,7 @@ def get_speed_units(frame, **kwargs):
     Get the car's speed units.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         string. Car's speed units, usually km/hr or mi/hr.
@@ -75,7 +79,7 @@ def get_distance_units(frame, **kwargs):
     Get the car's distance units.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         string. Car's distance units, km or mi.
@@ -94,7 +98,7 @@ def get_temperature_units(frame, **kwargs):
     Get the car's temperature units.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         string. Car's distance units, C or F.
@@ -108,7 +112,7 @@ def is_charging(frame, **kwargs):
     Get if the car is charging.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         bool.
@@ -123,7 +127,7 @@ def fast_charger_present(frame, **kwargs):
     Get if the car is using a fast charger.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         bool.
@@ -138,7 +142,7 @@ def get_charger_phases(frame, **kwargs):
     Get the number of phases when using the onboard charger.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         int. Number of charger phases or None if the car isn't charging or the onboard
@@ -160,7 +164,7 @@ def get_charge_current(frame, **kwargs):
     Get the charge current.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         float. Charge current or None if the car is not charging.
@@ -177,7 +181,7 @@ def get_charge_power(frame, **kwargs):
     Get the charge power.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         float. Car's charge power or None if the car is not charging.
@@ -201,7 +205,7 @@ def get_charge_tension(frame, **kwargs):
     Get the charge tension.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         float. Car's charge tension or None if the car is not charging.
@@ -222,10 +226,11 @@ def get_charge_efficiency(frame, **kwargs):
     Get the charge efficiency when using the onboard charger.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
-        float. Charge efficiency or None if the charge efficiency can not be calculated.
+        float. Charge efficiency or None if the charge efficiency can not be
+        calculated.
     """
     if is_charging(frame) and not fast_charger_present(frame):
         phases = get_charger_phases(frame)
@@ -244,10 +249,11 @@ def get_charge_power_drawn(frame, **kwargs):
     Get the power drawn by the onboard charger.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
-        float. Power drawn or None if the car is not charging or if it can not be calculated.
+        float. Power drawn or None if the car is not charging or if it can not be
+        calculated.
     """
     if is_charging(frame) and not fast_charger_present(frame):
         tension = get_charge_tension(frame)
@@ -266,7 +272,7 @@ def get_charge_time_left(frame, **kwargs):
     Get the time left to complete the charge.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         timedelta. Time left or None if the car is not charging.
@@ -286,7 +292,7 @@ def get_charge_added(frame, **kwargs):
     Get the charge added in the charge session.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         float. Charge added or None if the car is not charging.
@@ -303,7 +309,7 @@ def get_engine_power(frame, **kwargs):
     Get the battery pack output.
 
     Args:
-        frame (dict): frame to adapt.
+        - frame (dict): frame to adapt.
 
     Returns:
         float. Battery pack output or None if the car is charging.
