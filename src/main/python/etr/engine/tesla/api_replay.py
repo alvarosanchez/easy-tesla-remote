@@ -4,7 +4,7 @@ from .endpoints import SupportedEndpoints
 
 class TeslaApiReplay():
     """
-    Replay a set of pre recorded API responses
+    Replay a set of pre recorded API responses.
     """
 
     token_response = {
@@ -25,7 +25,8 @@ class TeslaApiReplay():
 
     def __init__(self, replayer):
         """
-        :param replayer: replayer object that will provide the data
+        Args:
+            - replayer: replayer object that will provide the data.
         """
         self.token = 'Replay Token'
         self.replayer = replayer
@@ -39,9 +40,17 @@ class TeslaApiReplay():
 
     def send_request(self, endpoint, *args):
         """
-        Return the next response from the replayer and the endpoint
+        Return the next response from the replayer and the endpoint.
 
-        Only VEHICLE_LIST and VEHICLE_DATA endpoints are supported
+        Args:
+            - endpoint (str): endpoint name. Only VEHICLE_LIST and VEHICLE_DATA
+                endpoints are supported.
+
+        *Args:
+            - 0 (str): car id. Only for VEHICLE_DATA endpoint.
+
+        Returns:
+            dict containing the prerecorded response.
         """
         if endpoint == self.urls.VEHICLE_LIST:
             return self.replayer.next_status()

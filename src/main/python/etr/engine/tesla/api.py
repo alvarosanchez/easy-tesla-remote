@@ -16,12 +16,12 @@ class TeslaApiError(Exception):
 
 class TeslaApi():
     """
-    Tesla API client
+    Tesla API client.
 
     The token can be set when instancing the class using the constructor
-    or later by setting the token attribute
+    or later by setting the token attribute.
 
-    For Tesla Api details see: https://tesla-api.timdorr.com/api-basics/authentication
+    For Tesla Api details see: https://tesla-api.timdorr.com/.
     """
 
     def __init__(self, token=''):
@@ -34,10 +34,14 @@ class TeslaApi():
 
     def _build_headers(self, include_token):
         """
-        Build the headers for a request
+        Build the headers for a request.
 
-        :param include_token: Sets whether the authorization token will be included
-        or not in the header
+        Args:
+            - include_token (bool): Sets whether the authorization token will be
+                included or not in the header.
+        
+        Returns:
+            dict containing the headers for an API request.
         """
         result = {
             'User-Agent': self.user_agent,
@@ -49,13 +53,16 @@ class TeslaApi():
 
     def _validate_response(self, response, endpoint):
         """
-        Validate an api response
+        Validate an api response.
 
-        :param response: api raw response
-        :param endpoint: dictionary containing the endpoint configuration
+        Args:
+            - response (requests response): api raw response.
+            - endpoint (dict): dictionary containing the endpoint details.
 
-        :raise TeslaApiError: if the response status code is not the expected
-        one or if the RESULT_KEY is required and missing from the response
+        Raises:
+            - TeslaApiError: if the response status code is not the expected
+                one or if the RESULT_KEY is required and missing from the 
+                response.
         """
         if response.status_code != endpoint['VALID_RESULT']:
             message = f'Response status code is {response.status_code} '\
@@ -68,10 +75,13 @@ class TeslaApi():
 
     def refresh_token(self, refresh_token):
         """
-        Get new access and refresh tokens using the refresh token      
+        Get new access and refresh tokens using the refresh token.
 
-        :param refresh_token: refresh token for the account
-        :return: dictionary containing the API response
+        Args:
+            - refresh_token (str): refresh token for the account.
+        
+        Returns:
+            dictionary containing the API response.
         """
         return self.send_request(
             self.urls.REFRESH_TOKEN,
@@ -82,11 +92,15 @@ class TeslaApi():
 
     def get_token(self, email, password):
         """
-        Get new access and refresh tokens using the account's email and password
+        Get new access and refresh tokens using the account's email and
+        password.
 
-        :param email: email address used to log into Tesla
-        :param password: user password for the Tesla site
-        :return: dictionary containing the API response
+        Args:
+            - email (str): email address used to log into Tesla.
+            - password (str): user password for the Tesla site.
+
+        Returns: 
+            dictionary containing the API response.
         """
         return self.send_request(
             self.urls.AUTHENTICATE,
@@ -98,13 +112,16 @@ class TeslaApi():
 
     def send_request(self, endpoint, *args):
         """
-        Send a request to Tesla's API
+        Send a request to Tesla's API.
 
-        :param endpoint: Name of the endpoint, this class urls attribute contains
-        a list of accepted values.
-        :param args: arguments required by the endpoint, usually they require only
-        the car id. To check the required parameters of a particular endpoint 
-        check endpoints.py
+        Args:
+            - endpoint: Name of the endpoint, this class urls attribute
+                contains a list of accepted values.
+        
+        *Args:
+            arguments required by the endpoint, usually they require only
+            the car id. To check the required parameters of a particular
+            endpoint check endpoints.py.
         """
         if endpoint not in self.urls.supported_endpoints:
             raise TeslaApiError(f'Endpoint {endpoint} not supported')

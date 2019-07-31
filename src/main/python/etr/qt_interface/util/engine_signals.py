@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 
 class EngineSignals(QObject):
     """
-    Wrapper to turn engine events into QT signals
+    Wrapper to turn engine events into QT signals.
 
     This class is usefull to make sure that the engine
-    events are processed by QT's event loop
+    events are processed by QT's event loop.
     """
 
     api_switched = pyqtSignal(bool)
