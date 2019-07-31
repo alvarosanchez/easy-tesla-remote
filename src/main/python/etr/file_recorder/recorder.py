@@ -42,7 +42,7 @@ class FileRecorder:
         self._app_engine = engine
         self.anonymize = anonymize
 
-        if destination_path != None:
+        if destination_path is not None:
             self.destination_path = destination_path
         else:
             self.destination_path = path.join(path.expanduser('~'), 'etr_recordings')

@@ -149,7 +149,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     existing_tab = tab
                     break
 
-            if existing_tab == None:
+            if existing_tab is None:
                 existing_tab = VehicleView()
 
                 existing_tab.wake_up.connect(self._on_vehicle_wake_up)
@@ -158,7 +158,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 tab_name = frame['vin']
                 if  'display_name' in frame \
-                        and frame['display_name'] != None \
+                        and frame['display_name'] is not None \
                         and frame['display_name'] != '':
                     tab_name = frame['display_name']
                 self.tabWidget.addTab(existing_tab, tab_name)
@@ -167,7 +167,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _on_engine_credentials_required(self):
         logger.debug('Asking user for credentials')
-        if self.credentials_dialog == None:
+        if self.credentials_dialog is None:
             self.credentials_dialog = CredentialsDialog(self.app_engine, self)
             if self.credentials_dialog.exec_() == 1:
                 self.app_engine.poll_start()

@@ -97,7 +97,7 @@ class VehicleView(QWidget, Ui_VehicleView):
 
             if issubclass(type(attribute), QWidget):
                 adapter = attribute.property('valueAdapter')
-                if adapter != None:
+                if adapter is not None:
                     execute_adapter(adapter, frame, attribute)
 
     def on_action_wake_up(self):

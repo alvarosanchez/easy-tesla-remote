@@ -89,7 +89,7 @@ def string_conversion(frame, **kwargs):
     Returns:
         string. Casted input value.
     """
-    if kwargs['input'] != None:
+    if kwargs['input'] is not None:
         return str(kwargs['input'])
     else:
         return None

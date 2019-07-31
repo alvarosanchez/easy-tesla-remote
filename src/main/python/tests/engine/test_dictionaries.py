@@ -32,7 +32,7 @@ def test_get_dictionary_value(dictionary):
     val4 = get_dictionary_value(dictionary, 'd.d5.d5a')
 
     assert val1 == 1
-    assert val2 == None
+    assert val2 is None
     assert val3 == 4
     assert val4 == '5'
 
@@ -41,8 +41,8 @@ def test_get_dictionary_value_key_doesnt_exist(dictionary):
     val1 = get_dictionary_value(dictionary, 'z')
     val2 = get_dictionary_value(dictionary, 'z.z1.z1a')
 
-    assert val1 == None
-    assert val2 == None
+    assert val1 is None
+    assert val2 is None
 
 
 def test_dump_to_tupple_list(dictionary):

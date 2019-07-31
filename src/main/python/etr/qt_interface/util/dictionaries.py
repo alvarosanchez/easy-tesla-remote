@@ -15,7 +15,7 @@ def get_dictionary_value(dictionary, key):
     """
     names = key.split('.', 1)
 
-    if names == None or names[0] not in dictionary:
+    if names is None or names[0] not in dictionary:
         return None
     
     if len(names) == 1:
@@ -41,10 +41,10 @@ def dump_to_tupple_list(dictionary, prefix=None):
 
     for key in dictionary:
         if issubclass(type(dictionary[key]), dict):
-            new_prefix = f'{prefix}.{key}' if prefix != None else f'{key}'
+            new_prefix = f'{prefix}.{key}' if prefix is not None else f'{key}'
             result.extend(dump_to_tupple_list(dictionary[key], prefix=new_prefix))
         else:
-            name = f'{prefix}.{key}' if prefix != None else f'{key}'
+            name = f'{prefix}.{key}' if prefix is not None else f'{key}'
             result.append((name, dictionary[key]))
 
     return result
