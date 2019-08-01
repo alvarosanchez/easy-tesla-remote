@@ -8,7 +8,7 @@ from PyQt5.QtCore import pyqtSignal
 from .auto_generated.credentials_dialog_auto import Ui_CredentialsDialog
 from .util.engine_signals import EngineSignals
 
-from engine.app_engine import EngineValidationError
+from etr.engine.app_engine import EngineValidationError
 
 
 logger = logging.getLogger(__name__)

@@ -5,7 +5,7 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtCore import Qt
 from .auto_generated.option_codes_dialog_auto import Ui_OptionsCodeDialog
-from engine.app_engine import EngineValidationError 
+from etr.engine.app_engine import EngineValidationError 
 
 
 class OptionCodesDialog(QDialog, Ui_OptionsCodeDialog):
