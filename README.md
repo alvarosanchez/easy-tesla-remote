@@ -14,7 +14,8 @@ This application is possible thanks to the [unofficial Tesla API documentation](
 
 # Installers
 
-Soon
+- [Windows](https://github.com/jumimo/easy-tesla-remote/releases/download/alpha_0.0.0/EasyTeslaRemoteSetup.exe)
+- [Debian/Ubuntu](https://github.com/jumimo/easy-tesla-remote/releases/download/alpha_0.0.0/EasyTeslaRemote.deb)
 
 # Code setup
 
