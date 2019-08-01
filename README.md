@@ -1,6 +1,6 @@
 # About
 
-EasyTeslaRemote is a desktop application to interact with your Tesla car through Tesla's API. Its main focus is privacy, your credentials will only be used to log in Tesla's servers and won't we send or stored anywhere else. Also the data obtained from Tesla won't leave your computer.
+EasyTeslaRemote is a desktop application that interacts with your Tesla car through Tesla's API. Its main focus is privacy, your credentials will only be used to log in Tesla's servers and won't we send or stored anywhere else. Also the data obtained from Tesla won't leave your computer.
 
 In this early stage the app functionality is pretty limited:
 - Expose all the information about your car provided by Tesla's API.
@@ -9,7 +9,7 @@ In this early stage the app functionality is pretty limited:
 - Option code translator.
 - Wake up an asleep car. Honk its horn or flash its lights.
 
-This application was possible thanks to the [unofficial Tesla API documentation](https://tesla-api.timdorr.com/).
+This application is possible thanks to the [unofficial Tesla API documentation](https://tesla-api.timdorr.com/).
 
 # Installers
 
